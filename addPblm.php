@@ -102,13 +102,13 @@ if ( isset($_POST['submit']))  {
 						
 						if (move_uploaded_file($_FILES['docxfile']['tmp_name'], $pathName)){
 							
-							$_SESSION['success'] = 'DocxFile upload successful';
+							$_SESSION['success'] = $_SESSION['success'].'DocxFile upload successful';
 						}
 						
 						$pathName = 'uploads/'.$newInputNm;
 						if (move_uploaded_file($_FILES['inputdata']['tmp_name'], $pathName)){
 							
-							$_SESSION['success'] = 'Input data file upload successful';
+							$_SESSION['success'] = $_SESSION['success'].'Input data file upload successful';
 						}
 		
 		// now put the data from the answer files in the Qa table

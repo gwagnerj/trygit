@@ -2,11 +2,12 @@
 require_once "pdo.php";
 session_start();
 
-if ( isset($_POST['name']) && isset($_POST['email'])
-     && isset($_POST['title']) && isset($_POST['s_name']) ) {
+if ( isset($_POST['name']) or isset($_POST['email'])
+     or isset($_POST['title']) or isset($_POST['s_name']) ) {
 
-    // Data validation
-    if ( strlen($_POST['name']) < 1 || strlen($_POST['title']) < 1) {
+   // Data validation
+	
+	if ( strlen($_POST['name']) < 1 || strlen($_POST['title']) < 1) {
         $_SESSION['error'] = 'Missing data';
         header("Location: edit.php?problem_id=".$_POST['problem_id']);
         return;
@@ -18,14 +19,22 @@ if ( isset($_POST['name']) && isset($_POST['email'])
         return;
     }
 
+// get the new school_id	
+	$stmt = $pdo->prepare("SELECT * FROM school where s_name = :xyz");
+	$stmt->execute(array(":xyz" => $_POST['s_name']));
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	
+	
+	
     $sql = "UPDATE problem SET name = :name,
-            email = :email, title = :title
+            email = :email, title = :title,school_id=:school_id
             WHERE problem_id = :problem_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(
         ':name' => $_POST['name'],
         ':email' => $_POST['email'],
         ':title' => $_POST['title'],
+		':school_id' => $row['school_id'],
         ':problem_id' => $_POST['problem_id']));
     $_SESSION['success'] = 'Record updated';
     header( 'Location: index.php' ) ;
@@ -58,8 +67,14 @@ if ( isset($_SESSION['error']) ) {
 $n = htmlentities($row['name']);
 $e = htmlentities($row['email']);
 $p = htmlentities($row['title']);
-$f = 'filename';
 $problem_id = $row['problem_id'];
+$school_id= $row['school_id'];
+
+// now get the current school name
+$stmt = $pdo->prepare("SELECT * FROM school where school_id = :xyz");
+$stmt->execute(array(":xyz" => $school_id));
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+$s = htmlentities($row['s_name']);
 
 $sql="SELECT DISTINCT s_name from School ORDER BY s_name";
 $stmt = $pdo->query($sql);
@@ -83,7 +98,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <p>
 <label> School or Organization:
 		<select required name = "s_name">
-			<option> --Select the school (Required)--</option>
+			<option selected = "selected"> <?php echo $s ?></option>
 			<?php foreach ($s_name as $values){?>
 			<option><?php echo $values;?></option>
 			<?php }?>
