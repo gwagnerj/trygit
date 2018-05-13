@@ -10,7 +10,7 @@ if ( isset($_POST['delete']) && isset($_POST['problem_id']) ) {
     $stmt->execute(array(':zip' => $_POST['problem_id']));
 	$data = $stmt -> fetch();
 	$docxfilenm=$data['docxfilenm'];  // 
-	$inputfilenm=$data['Infilenm'];  // these are the name of the files we need to delete
+	$inputfilenm=$data['infilenm'];  // these are the name of the files we need to delete
 	
 // Now delete the row from the database
 	$sql = "DELETE FROM problem WHERE problem_id = :zip";
