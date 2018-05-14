@@ -259,7 +259,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 </p>
 <p>Answers a CSV File: <input type='file' name='Qa'/></p>
-<p><strong><font color="red">Input values a CSV File: </font></strong><input type='file' name='inputdata'/></p>
+<p><b><font color="black">Input values a CSV File: </font></b><input type='file' name='inputdata'/></p>
 <p>Problem statement a Docx file: <input type='file' name='docxfile'/></p>
 
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
