@@ -164,14 +164,18 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				
 			// this should conserve the data already input and 
 	
-	
-	
-	
-	
-	
+	$sql = "SELECT * FROM problem JOIN School JOIN qa ON (problem.school_id=School.school_id AND qa.problem_id=Problem.problem_id AND qa.dex=1 )";
+	$stmt = $pdo->prepare($sql);
+	$stmt->execute(array(
+	));
+	$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	$status = $row['problem.status'];
+	IF (($row['problem.docxfilenm']!=="NULL") AND ($row['problem.infilenm']!=="NULL") AND ($row['qa.dex']!=="NULL")){
+		$status = "New Compl";
+	}
 	
     $sql = "UPDATE problem SET name = :name,
-            email = :email, title = :title,school_id=:school_id
+            email = :email, title = :title,school_id=:school_id,status = :status
             WHERE problem_id = :problem_id";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(
@@ -179,8 +183,18 @@ if ( isset($_POST['name']) or isset($_POST['email'])
         ':email' => $_POST['email'],
         ':title' => $_POST['title'],
 		':school_id' => $row['school_id'],
-        ':problem_id' => $_POST['problem_id']));
+        ':problem_id' => $_POST['problem_id'],
+		':status' => $status));
     $_SESSION['success'] = 'Record updated';
+	
+	// If all fields have values we should set the status to new file
+	
+	
+	
+	
+	
+	
+	
     header( 'Location: index.php' ) ;
     return;
 }

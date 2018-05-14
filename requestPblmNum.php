@@ -20,11 +20,6 @@ if(isset($_POST['title'])){
 						$row = $stmt->fetch(PDO::FETCH_ASSOC);
 						$school_id=$row['school_id'];
 	  
-	  
-	  
-	  
-	  
-	  
 	  $sql = "INSERT INTO problem (name, email, title,school_id,status)	VALUES (:name, :email, :title, :school_id,:status)";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
@@ -40,18 +35,7 @@ if(isset($_POST['title'])){
 				return;
 				
 				
-	   /*  $sql = "INSERT INTO problem  = :name,
-				email = :email, title = :title
-				WHERE problem_id = :problem_id";
-		$stmt = $pdo->prepare($sql);
-		$stmt->execute(array(
-			':name' => $_POST['name'],
-			':email' => $_POST['email'],
-			':title' => $_POST['title'],
-			':problem_id' => $_POST['problem_id']));
-		$_SESSION['success'] = 'Record updated';
-		header( 'Location: index.php' ) ;
-		return; */
+	 
 	}
 	else {
 			$_SESSION['error'] = 'All inputs are required';
@@ -60,36 +44,13 @@ if(isset($_POST['title'])){
 	}
 
 
-
-	// Guardian: Make sure that problem_id is present
-	/* if ( ! isset($_GET['problem_id']) ) {
-	  $_SESSION['error'] = "Missing problem_id";
-	  header('Location: index.php');
-	  return;
-	}
-
-	$stmt = $pdo->prepare("SELECT * FROM problem where problem_id = :xyz");
-	$stmt->execute(array(":xyz" => $_GET['problem_id']));
-	$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	if ( $row === false ) {
-		$_SESSION['error'] = 'Bad value for problem_id';
-		header( 'Location: index.php' ) ;
-		return;
-	} */
-
 	// Flash pattern
 	if ( isset($_SESSION['error']) ) {
 		echo '<p style="color:red">'.$_SESSION['error']."</p>\n";
 		unset($_SESSION['error']);
 	}
 
-/* $n = htmlentities($row['name']);
-$e = htmlentities($row['email']);
-$p = htmlentities($row['title']);
-$f = 'filename';
-$problem_id = $row['problem_id']; */
 }
-
 
 // Get the school names from the database so we can use them in drop down selection box
 $sql="SELECT DISTINCT s_name from School ORDER BY s_name";
