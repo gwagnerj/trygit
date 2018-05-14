@@ -45,6 +45,7 @@ INSERT INTO School (s_name) VALUES('Trine University');
    name VARCHAR(128),
    email VARCHAR(128),
    title VARCHAR(128),
+   status VARCHAR(16),
    docxfilenm VARCHAR(128),
    Infilenm VARCHAR(128),
    school_id int,

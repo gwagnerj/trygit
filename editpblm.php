@@ -189,12 +189,6 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 	
 	// If all fields have values we should set the status to new file
 	
-	
-	
-	
-	
-	
-	
     header( 'Location: index.php' ) ;
     return;
 }
