@@ -40,6 +40,32 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			header( 'Location: index.php' ) ;
 			return;	
 		} 
+	//Get the filename from the pdffile (base-case) that was uploaded
+		if($_FILES['pdffile']['name']) {
+			$filename=explode(".",$_FILES['pdffile']['name']); // divides the file into its name and extension puts it into an array
+			if ($filename[1]=='pdf'){ // this is the extension
+		/* print_r ($filename[1]);
+		die; */
+
+		
+				$pdffile=addslashes($_FILES['pdffile']['tmp_name']);
+				$pdfname=addslashes($_FILES['pdffile']['name']);
+				$pdffile=file_get_contents($pdffile);
+				
+//this code needs work			
+				$pdfname = $_FILES['pdffile']['name'];
+				$tmp_pdfname =  $_FILES['pdffile']['tmp_name'];
+				$location = "uploads/"; // This is the local file directory name where the files get saved
+			}
+			else{$_SESSION['error']='pdf (base-case) file not loaded';
+				header( 'Location: index.php' ) ;
+				return;	
+			}
+		}
+		else {$_SESSION['error']='pdffile (Basecase) not loaded';
+			header( 'Location: index.php' ) ;
+			return;	
+		}
 		
 		// now get input data
 	if($_FILES['inputdata']['name']) {
@@ -76,8 +102,8 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 		//Print_r ($school_id);
 		//Print_r ($_POST['problem_id']);
 	//	die ();
-	// insert into problems with temporary file names for the docx and input data
-	$sql = "UPDATE problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, school_id = :school_id	
+	// insert into problems with temporary file names for the docx, input data and pdf file
+	$sql = "UPDATE problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, pdffilenm=:pdffilenm, school_id = :school_id	
 	WHERE problem_id=:problem_id";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
@@ -86,15 +112,33 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				':title' => $_POST['title'],
 				':docxfilenm'=> $docxname,
 				':infilenm'=> $inputname,
+				':pdffilenm'=> $pdfname,
 				':school_id'=> $school_id,
 				':problem_id' => $_POST['problem_id']));
 					
 			// now replace the file name with the actual file name with the location build in
-			// first get the new name complete with pathname	
-				$problem_id=$_POST['problem_id'];
-			$newDocxNm = "P".$problem_id."_d_".$docxname;
-			$newInputNm= "P".$problem_id."_i_".$inputname;			
-	
+			// first get the new name complete with pathname.  this will be if the form P##_
+			
+			$problem_id=$_POST['problem_id'];
+			if (fnmatch("P*_d_*",$docxname,FNM_CASEFOLD ) ){ // ignore the case when matching
+				$newDocxNm = $docxname;
+			}
+			else {
+				$newDocxNm = "P".$problem_id."_d_".$docxname;
+			}
+			if (fnmatch("P*_i_*",$inputname,FNM_CASEFOLD ) ){
+				$newInputNm = $inputname;
+			}
+			else {
+				$newInputNm = "P".$problem_id."_i_".$inputname;
+			}
+			if (fnmatch("P*_p_*",$pdfname,FNM_CASEFOLD ) ){
+				$newPdfNm = $pdfname;
+			}
+			else {
+				$newPdfNm = "P".$problem_id."_p_".$pdfname;
+			}
+			
 	
 	// these will need if statements to see if this has been loaded
 	
@@ -109,24 +153,31 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			$stmt->execute(array(
 				':newInputNm' => $newInputNm,
 				':pblm_num' => $_POST['problem_id']));	
+				
+			$sql = "UPDATE problem SET pdffilenm = :newPdfNm WHERE problem_id = :pblm_num";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(
+				':newPdfNm' => $newPdfNm,
+				':pblm_num' => $_POST['problem_id']));
 	
 			$_SESSION['success'] = 'Record updated';
 						
-			// now upload docx and input files
+			// now upload docx, input and pdf files
 			$pathName = 'uploads/'.$newDocxNm;
-			
-			
 			if (move_uploaded_file($_FILES['docxfile']['tmp_name'], $pathName)){
-				
 				$_SESSION['success'] = $_SESSION['success'].'DocxFile upload successful';
 			}
 			
 			$pathName = 'uploads/'.$newInputNm;
 			if (move_uploaded_file($_FILES['inputdata']['tmp_name'], $pathName)){
-				
 				$_SESSION['success'] = $_SESSION['success'].'Input data file upload successful';
 			}
-	
+			
+			$pathName = 'uploads/'.$newPdfNm;
+			if (move_uploaded_file($_FILES['pdffile']['tmp_name'], $pathName)){
+				
+				$_SESSION['success'] = $_SESSION['success'].'PdfFile upload successful';
+			}
 	
 	
 			if($_FILES['Qa']['name']){
@@ -138,7 +189,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 										
 						While($data=fgetcsv($handle)) {
 							If ($lines>0){
-								// put the data into the 
+								// put the answer data into the data base
 								$sql = "INSERT INTO Qa (problem_ID, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j)	
 								VALUES (:problem_ID, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j)";
 								$stmt = $pdo->prepare($sql);
@@ -261,6 +312,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <p>Answers a CSV File: <input type='file' name='Qa'/></p>
 <p><b><font color="black">Input values a CSV File: </font></b><input type='file' name='inputdata'/></p>
 <p>Problem statement a Docx file: <input type='file' name='docxfile'/></p>
+<p>Base-case a pdf file: <input type='file' name='pdffile'/></p>
 
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
 <p><input type="submit" value="Update"/>

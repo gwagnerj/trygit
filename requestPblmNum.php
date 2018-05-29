@@ -30,7 +30,7 @@ if(isset($_POST['title'])){
 				':status' => 'num issued'));
 				
 			$pblm_num=$pdo->lastInsertId();
-				$_SESSION['success'] = 'your problem number is '.$pblm_num;
+				$_SESSION['success'] = 'your problem number is '.$pblm_num*10;
 				header( 'Location: index.php' ) ;
 				return;
 				

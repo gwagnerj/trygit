@@ -15,7 +15,7 @@ if ( isset($_SESSION['success']) ) {
 }
 echo('<table border="1">'."\n");
 	echo("</td><td>");
-	echo('<b>Problem ID</b>');
+	echo('<b>Problem Num</b>');
 	echo("</td><td>");
 	echo('<b>Contributor Name</b>');
     echo("</td><td>");
@@ -47,7 +47,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     echo "<tr><td>";
     //Print_r($row);
 	//die();
-	echo(htmlentities($row['problem_id']));
+	echo(htmlentities($row['problem_id'])*10);
     echo("</td><td>");	
 	echo(htmlentities($row['name']));
     echo("</td><td>");
@@ -66,7 +66,10 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     echo('<a href="editpblm.php?problem_id='.$row['problem_id'].'">Edit</a> / ');
     echo('<a href="deletepblm.php?problem_id='.$row['problem_id'].'">Del</a> / ');
 	echo('<a href="downloadpblm.php?problem_id='.$row['problem_id'].'">Download</a>');
-    echo("</td></tr>\n");
+	echo('<form action = "index.php" method = "post"> <botton type = "submit" name = "preview" value ="'.$row['problem_id'].'">Preview</button> </form>');
+   
+   echo("</td></tr>\n");
+	
 }
 ?>
 </table>
@@ -75,5 +78,11 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <!--<a href="addPblm.php">Add Data and Pblm Files</a> -->
 <p></p>
 <a href="requestPblmNum.php"><b>Request New Problem Number</b></a>
+<object data="uploads/P27_p_P10_base_street covers example problem.pdf" 
+type= "application/pdf" width="100%" Height="50%">
+<iframe src="uploads/P27_p_P10_base_street covers example problem.pdf#page=1" width="100%" Height = "50%">
+
+</iframe>
+</object> 
 </body>
 </html>

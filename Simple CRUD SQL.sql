@@ -48,6 +48,7 @@ INSERT INTO School (s_name) VALUES('Trine University');
    status VARCHAR(16),
    docxfilenm VARCHAR(128),
    Infilenm VARCHAR(128),
+   pdffilenm VARCHAR(128),
    school_id int,
    INDEX using BTREE(name),
    CONSTRAINT FOREIGN KEY (school_id) REFERENCES School (school_id) 
