@@ -13,6 +13,9 @@ if ( isset($_SESSION['success']) ) {
     echo '<p style="color:green">'.$_SESSION['success']."</p>\n";
     unset($_SESSION['success']);
 }
+
+
+
 echo('<table border="1">'."\n");
 	echo("</td><td>");
 	echo('<b>Problem Num</b>');
@@ -32,21 +35,28 @@ echo('<table border="1">'."\n");
 	 echo('<b>University</b>');
     echo("</td><td>");
 	 echo('<b>Functions</b>');
-    
+    echo("</td><td>");
+	 echo('<b>Preview</b>');
 	echo("</td></tr>\n");
-$qstmnt="SELECT problem.problem_id AS problem_id,problem.name AS name,problem.email as email,problem.title as title,problem.status as status, problem.docxfilenm as docxfilenm,problem.infilenm as infilenm,School.s_name as s_name
+$qstmnt="SELECT problem.problem_id AS problem_id,problem.name AS name,problem.email as email,problem.title as title,problem.status as status, problem.docxfilenm as docxfilenm,problem.infilenm as infilenm,problem.pdffilenm as pdffilenm, School.s_name as s_name
 FROM problem LEFT JOIN School ON problem.school_id=School.school_id;";
  
 // $qstmnt="SELECT * FROM problem LEFT JOIN School ON problem.school_id=School.school_id;";
  
 $stmt = $pdo->query($qstmnt);
 
-
+$preview="Null";
 
 while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     echo "<tr><td>";
     //Print_r($row);
 	//die();
+	//if they request the file then set the $preview variable to the name of the file
+	if (isset($_POST['preview']) and $_POST['preview']= htmlentities($row['problem_id'])){
+		$preview='uploads/'.htmlentities($row['pdffilenm']);
+	}
+
+	
 	echo(htmlentities($row['problem_id'])*10);
     echo("</td><td>");	
 	echo(htmlentities($row['name']));
@@ -66,11 +76,13 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     echo('<a href="editpblm.php?problem_id='.$row['problem_id'].'">Edit</a> / ');
     echo('<a href="deletepblm.php?problem_id='.$row['problem_id'].'">Del</a> / ');
 	echo('<a href="downloadpblm.php?problem_id='.$row['problem_id'].'">Download</a>');
-	echo('<form action = "index.php" method = "post"> <botton type = "submit" name = "preview" value ="'.$row['problem_id'].'">Preview</button> </form>');
+	  echo("</td><td>");
+	echo('<form action = "index.php" method = "post"> <input type = "submit" name = "preview" value ="'.$row['problem_id'].'">Preview </form>');
    
    echo("</td></tr>\n");
 	
 }
+echo ('"'.$preview.'"');
 ?>
 </table>
 <p></p>
@@ -78,11 +90,17 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <!--<a href="addPblm.php">Add Data and Pblm Files</a> -->
 <p></p>
 <a href="requestPblmNum.php"><b>Request New Problem Number</b></a>
-<object data="uploads/P27_p_P10_base_street covers example problem.pdf" 
-type= "application/pdf" width="100%" Height="50%">
-<iframe src="uploads/P27_p_P10_base_street covers example problem.pdf#page=1" width="100%" Height = "50%">
 
-</iframe>
-</object> 
+
+<!-- <object data=<?php// echo('"'.$preveiw.'"'); ?> 
+type= "application/pdf" width="100%" Height="50%"> -->
+<?php 
+if($preview !== "Null") {
+	echo ('<iframe src="'.$preview.'"'.'width="100%" Height = "50%">');
+
+	echo ('</iframe>');
+}
+?>
+<!-- </object> -->
 </body>
 </html>
