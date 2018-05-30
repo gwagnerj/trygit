@@ -18,16 +18,19 @@ if ( ! isset($_GET['problem_id']) ) {
 	//die ();
 	$docxfilenm=$data['docxfilenm'];
 	$inputdata=$data['infilenm'];
+	$pdffilenm=$data['pdffilenm'];
 	
 	$file_pathdocx='uploads/'.$docxfilenm;
 	$file_pathinput='uploads/'.$inputdata;
+	$file_pathpdf='uploads/'.$pdffilenm;
 	
 	echo 'click on files to download';
 	echo "<br>";
     echo "<a href='".$file_pathdocx."'>".$docxfilenm."</a>";
 	echo "<br>";
     echo "<a href='".$file_pathinput."'>".$inputdata."</a>";
-		
+	echo "<br>";
+    echo "<a href='".$file_pathpdf."'>".$pdffilenm."</a>";	
 		
 	
    

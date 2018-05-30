@@ -57,7 +57,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 	}
 
 	
-	echo(htmlentities($row['problem_id'])*10);
+	echo(htmlentities($row['problem_id']));
     echo("</td><td>");	
 	echo(htmlentities($row['name']));
     echo("</td><td>");
@@ -82,7 +82,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
    echo("</td></tr>\n");
 	
 }
-echo ('"'.$preview.'"');
+//echo ('"'.$preview.'"');
 ?>
 </table>
 <p></p>
@@ -95,7 +95,7 @@ echo ('"'.$preview.'"');
 <!-- <object data=<?php// echo('"'.$preveiw.'"'); ?> 
 type= "application/pdf" width="100%" Height="50%"> -->
 <?php 
-if($preview !== "Null") {
+if($preview !== "uploads/" and $preview !== "Null") {
 	echo ('<iframe src="'.$preview.'"'.'width="100%" Height = "50%">');
 
 	echo ('</iframe>');

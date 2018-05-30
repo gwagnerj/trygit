@@ -95,13 +95,14 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			$stmt = $pdo->prepare("SELECT * FROM school where s_name = :xyz");
 			$stmt->execute(array(":xyz" => $_POST['s_name']));
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
-			$student_id=$row['school_id'];
+			$school_id=$row['school_id'];
+	
 	
 	
 	//Print_r ($docxname);
 		//Print_r ($school_id);
 		//Print_r ($_POST['problem_id']);
-	//	die ();
+		//die ();
 	// insert into problems with temporary file names for the docx, input data and pdf file
 	$sql = "UPDATE problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, pdffilenm=:pdffilenm, school_id = :school_id	
 	WHERE problem_id=:problem_id";
@@ -190,8 +191,8 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 						While($data=fgetcsv($handle)) {
 							If ($lines>0){
 								// put the answer data into the data base
-								$sql = "INSERT INTO Qa (problem_ID, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j)	
-								VALUES (:problem_ID, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j)";
+								$sql = "INSERT INTO Qa (problem_ID, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j,g1,g2,g3)	
+								VALUES (:problem_ID, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j,:g1,:g2,:g3)";
 								$stmt = $pdo->prepare($sql);
 								$stmt->execute(array(
 									':problem_ID' => $_POST['problem_id'],
@@ -205,7 +206,10 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 									':ans_g' => $data[7],
 									':ans_h' => $data[8],
 									':ans_i' => $data[9],
-									':ans_j' => $data[10]));
+									':ans_j' => $data[10],
+									':g1' => $data[11],
+									':g2' => $data[12],
+									':g3' => $data[13]));
 				
 							}
 							$lines = $lines+1;
