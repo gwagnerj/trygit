@@ -11,6 +11,7 @@ if ( isset($_POST['delete']) && isset($_POST['problem_id']) ) {
 	$data = $stmt -> fetch();
 	$docxfilenm=$data['docxfilenm'];  // 
 	$inputfilenm=$data['infilenm'];  // these are the name of the files we need to delete
+	$pdffilenm=$data['pdffilenm'];
 	
 // Now delete the row from the database
 	$sql = "DELETE FROM problem WHERE problem_id = :zip";
@@ -18,12 +19,14 @@ if ( isset($_POST['delete']) && isset($_POST['problem_id']) ) {
     $stmt->execute(array(':zip' => $_POST['problem_id']));
     
 	if(unlink('uploads/'.$docxfilenm)){ // unlink is the command to delet a file
-	
 		$_SESSION['success'] = 'Docxfile deleted';
 	}
 	if(unlink('uploads/'.$inputfilenm)){
 	
 		$_SESSION['success'] = 'Input data file deleted';
+	}
+	if(unlink('uploads/'.$pdffilenm)){ // unlink is the command to delete a file
+		$_SESSION['success'] = 'pdffile deleted';
 	}
     header( 'Location: index.php' ) ;
     return;
