@@ -46,6 +46,8 @@ INSERT INTO School (s_name) VALUES('Trine University');
    email VARCHAR(128),
    title VARCHAR(128),
    status VARCHAR(16),
+   nm_author VARCHAR(128),
+   game_prob_flag INT,
    docxfilenm VARCHAR(128),
    Infilenm VARCHAR(128),
    pdffilenm VARCHAR(128),
@@ -70,6 +72,9 @@ INSERT INTO School (s_name) VALUES('Trine University');
 	ans_h	double,
 	ans_i	double,
 	ans_j	double,
+	g1	VARCHAR(64),
+	g2	VARCHAR(64),
+	g3	VARCHAR(64),
 	CONSTRAINT FOREIGN KEY (Problem_ID) REFERENCES Problem (problem_id) 
 		ON DELETE CASCADE ON UPDATE CASCADE
  ) ENGINE = INNODB CHARACTER SET = utf8;

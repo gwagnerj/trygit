@@ -36,7 +36,7 @@ echo('<table border="1">'."\n");
     echo("</td><td>");
 	 echo('<b>Functions</b>');
     echo("</td><td>");
-	 echo('<b>Preview</b>');
+	 echo('<b>Base-Case</b>');
 	echo("</td></tr>\n");
 $qstmnt="SELECT problem.problem_id AS problem_id,problem.name AS name,problem.email as email,problem.title as title,problem.status as status, problem.docxfilenm as docxfilenm,problem.infilenm as infilenm,problem.pdffilenm as pdffilenm, School.s_name as s_name
 FROM problem LEFT JOIN School ON problem.school_id=School.school_id;";
@@ -77,8 +77,8 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     echo('<a href="deletepblm.php?problem_id='.$row['problem_id'].'">Del</a> / ');
 	echo('<a href="downloadpblm.php?problem_id='.$row['problem_id'].'">Download</a>');
 	  echo("</td><td>");
-	echo('<form action = "index.php" method = "post"> <input type = "submit" name = "preview" value ="'.$row['problem_id'].'">Preview </form>');
-   
+	echo('<form action = "index.php" method = "post"> <input type = "hidden" name = "preview" value ="'.$row['problem_id'].'"><input type = "submit" value ="PreView"></form>');
+ 
    echo("</td></tr>\n");
 	
 }
