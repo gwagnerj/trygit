@@ -1,7 +1,6 @@
-Sub CreateWordDocuments()
-Dim CustRow, CustCol, LastRow, TemplRow, DaysSince, FrDays, ToDays As Long
-Dim DocLoc, TagName, TagValue, TemplName, FileName As String
-Dim CurDt, LastAppDt As Date
+Sub mergeDocuments()
+Dim CustRow, CustCol, LastRow, TemplRow As Long
+Dim DocLoc,  TemplName, FileName As String
 Dim WordDoc, WordApp, OutApp, OutMail As Object
 Dim WordContent As Word.Range
 With Sheet1
@@ -13,8 +12,8 @@ With Sheet1
   End If
     TemplRow = .Range("B3").Value 'Set Template Row
     TemplName = .Range("G3").Value 'Set Template Name
-    FrDays = .Range("L3").Value 'Set From Days
-    ToDays = .Range("N3").Value 'Set To Days
+    
+   
     DocLoc = Sheet2.Range("F" & TemplRow).Value 'Word Document Filename
     
     'Open Word Template
