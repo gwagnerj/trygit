@@ -11,6 +11,21 @@ if(isset($_POST['title'])){
 			header("Location: index.php");
 			return;
 		}
+		if(isset($_POST['game'])){
+			$game_prob_flag=1;	
+		}
+		else {
+			$game_prob_flag=0;
+		}
+		if(isset($_POST['nm_author'])){
+			$nm_author=$_POST['nm_author'];	
+		}
+		else {
+			$nm_author="Null";
+		}
+		
+		
+		
 // need to get the school_id either from the post data or from a query
 						
 						$sql = " SELECT school_id FROM School where s_name = :s_name";
@@ -20,18 +35,22 @@ if(isset($_POST['title'])){
 						$row = $stmt->fetch(PDO::FETCH_ASSOC);
 						$school_id=$row['school_id'];
 	  
-	  $sql = "INSERT INTO problem (name, email, title,school_id,status)	VALUES (:name, :email, :title, :school_id,:status)";
+	  $sql = "INSERT INTO problem (name, email, title,nm_author, game_prob_flag,school_id,status)	VALUES (:name, :email, :title,:nm_author, :game_prob_flag,:school_id,:status)";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
 				':name' => $_POST['name'],
 				':email' => $_POST['email'],
-				':title' => $_POST['title'],	
+				':title' => $_POST['title'],
+				':nm_author' => $nm_author,				
+				':game_prob_flag' => $game_prob_flag,
 				':school_id' => $school_id,
 				':status' => 'num issued'));
 				
 			$pblm_num=$pdo->lastInsertId();
 				$_SESSION['success'] = 'your problem number is '.$pblm_num;
-				header( 'Location: index.php' ) ;
+				$file_name = 'p'.$pblm_num.'_'.$_POST['title'];
+				$_SESSION['file_name']=$file_name;
+				header( 'Location: downloadDocx.php' ) ;
 				return;
 				
 				
@@ -77,6 +96,10 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 <p>a Provisional Title:
 <input type="text" name="title" ></p>
+<p> The Author of the Base-Case (if different than Contributor):
+<input type="text" name="nm_author" ></p>
+<p>
+<input type="checkbox" name="game" Value = "checked"> This is a Game Problem</p>
 <label> School:
 		<select required name = "s_name">
 			<option> --Select the School or Organization (Required)--</option>
