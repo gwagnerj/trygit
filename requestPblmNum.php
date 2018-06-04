@@ -48,7 +48,7 @@ if(isset($_POST['title'])){
 				
 			$pblm_num=$pdo->lastInsertId();
 				$_SESSION['success'] = 'your problem number is '.$pblm_num;
-				$_Session['game_prob_flag']=$game_prob_flag;
+				$_SESSION['game_prob_flag']=$game_prob_flag;
 				$file_name = 'p'.$pblm_num.'_'.$game_prob_flag.'_'.$_POST['title'];
 				$_SESSION['file_name']=$file_name;
 				header( 'Location: downloadDocx.php' ) ;
