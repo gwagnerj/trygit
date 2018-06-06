@@ -44,14 +44,24 @@ INSERT INTO School (s_name) VALUES('Trine University');
      AUTO_INCREMENT KEY,
    name VARCHAR(128),
    email VARCHAR(128),
-   title VARCHAR(128),
+	   title VARCHAR(128),
    status VARCHAR(16),
    nm_author VARCHAR(128),
    game_prob_flag INT,
    docxfilenm VARCHAR(128),
-   Infilenm VARCHAR(128),
+   infilenm VARCHAR(128),
    pdffilenm VARCHAR(128),
    school_id int,
+   units_a VARCHAR(32),
+   units_b VARCHAR(32),
+   units_c VARCHAR(32),
+   units_d VARCHAR(32),
+   units_e VARCHAR(32),
+   units_f VARCHAR(32),
+   units_g VARCHAR(32),
+   units_h VARCHAR(32),
+   units_i VARCHAR(32),
+   units_j VARCHAR(32),
    INDEX using BTREE(name),
    CONSTRAINT FOREIGN KEY (school_id) REFERENCES School (school_id) 
 		ON DELETE CASCADE ON UPDATE CASCADE
@@ -59,8 +69,8 @@ INSERT INTO School (s_name) VALUES('Trine University');
 
 
  CREATE TABLE Qa (
-    Qa_id INTEGER NOT NULL AUTO_INCREMENT KEY,
-    Problem_ID int,
+    qa_id INTEGER NOT NULL AUTO_INCREMENT KEY,
+    problem_id int,
 	dex int,
 	ans_a	double,
 	ans_b	double,

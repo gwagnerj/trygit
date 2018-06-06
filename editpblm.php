@@ -92,19 +92,19 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 		
 // get the new school_id if it has been updated
 		
+		
 			$stmt = $pdo->prepare("SELECT * FROM school where s_name = :xyz");
 			$stmt->execute(array(":xyz" => $_POST['s_name']));
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			$school_id=$row['school_id'];
 	
-	
-	
+		
 	//Print_r ($docxname);
 		//Print_r ($school_id);
 		//Print_r ($_POST['problem_id']);
 		//die ();
 	// insert into problems with temporary file names for the docx, input data and pdf file
-	$sql = "UPDATE problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, pdffilenm=:pdffilenm, school_id = :school_id	
+	$sql = "UPDATE Problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, pdffilenm=:pdffilenm, school_id = :school_id	
 	WHERE problem_id=:problem_id";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
@@ -116,6 +116,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				':pdffilenm'=> $pdfname,
 				':school_id'=> $school_id,
 				':problem_id' => $_POST['problem_id']));
+				
 					
 			// now replace the file name with the actual file name with the location build in
 			// first get the new name complete with pathname.  this will be if the form P##_
@@ -180,22 +181,58 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$_SESSION['success'] = $_SESSION['success'].'PdfFile upload successful';
 			}
 	
-	
+		/*   	$row = 1;
+		if($_FILES['Qa']['name']){
+					$filename=explode(".",$_FILES['Qa']['name']);
+					if($filename[1]=='csv') {  // this is the file extension where the 0 entry is the file name
+		
+		
+						if (($handle = fopen($_FILES['Qa']['tmp_name'], "r")) !== FALSE) {
+							while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+								$num = count($data);
+								echo "<p> $num fields in line $row: <br /></p>\n";
+								$row++;
+								for ($c=0; $c < $num; $c++) {
+									echo $data[$c] . "<br />\n";
+								}
+							}
+							fclose($handle);
+						} 
+					}
+		}		  */
 			if($_FILES['Qa']['name']){
 					$filename=explode(".",$_FILES['Qa']['name']);
 					if($filename[1]=='csv') {  // this is the file extension where the 0 entry is the file name
 						$handle = fopen($_FILES['Qa']['tmp_name'], "r");
 						$lines=0;  //set this to ignore the header row in the csv file
-						
-										
+		
 						While($data=fgetcsv($handle)) {
-							If ($lines>0){
-								// put the answer data into the data base
-								$sql = "INSERT INTO Qa (problem_ID, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j,g1,g2,g3)	
-								VALUES (:problem_ID, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j,:g1,:g2,:g3)";
+							 If ($lines==0){
+								// put the units in the problem table
+								$sql = "UPDATE Problem SET units_a = :units_a, units_b = :units_b,units_c = :units_c, units_d = :units_d, 
+										units_e = :units_e, units_f = :units_f,units_g = :units_g, units_h = :units_h,units_i = :units_i, units_j = :units_j
+										WHERE problem_id = :pblm_num";
 								$stmt = $pdo->prepare($sql);
 								$stmt->execute(array(
-									':problem_ID' => $_POST['problem_id'],
+										':units_a' => $data[1],
+										':units_b' => $data[2],
+										':units_c' => $data[3],
+										':units_d' => $data[4],
+										':units_e' => $data[5],
+										':units_f' => $data[6],
+										':units_g' => $data[7],
+										':units_h' => $data[8],
+										':units_i' => $data[9],
+										':units_j' => $data[10],
+										':pblm_num' => $_POST['problem_id']));
+							} 
+							If ($lines>1){
+								// put the answer data into the data base
+								$sql = "INSERT INTO Qa (problem_id, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j,g1,g2,g3)	
+								VALUES (:problem_id, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j,:g1,:g2,:g3)";
+								$stmt = $pdo->prepare($sql);
+								$stmt->execute(array(
+									':problem_id' => $_POST['problem_id'],
 									':dex' => $data[0],
 									':ans_a' => $data[1],
 									':ans_b' => $data[2],
@@ -214,12 +251,13 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 							}
 							$lines = $lines+1;
 						}
+						fclose($handle);
 					}else {$_SESSION['error']=' Answer file is not a csv file';}
 				}else {$_SESSION['error']=' Ans file not loaded';}
 				
 			// this should conserve the data already input and 
-	
-	$sql = "SELECT * FROM problem JOIN School JOIN qa ON (problem.school_id=School.school_id AND qa.problem_id=Problem.problem_id AND qa.dex=1 )";
+	//die();
+	$sql = "SELECT * FROM Problem JOIN School JOIN Qa ON (Problem.school_id=School.school_id AND Qa.problem_id=Problem.problem_id AND Qa.dex=1 )";
 	$stmt = $pdo->prepare($sql);
 	$stmt->execute(array(
 	));
