@@ -25,13 +25,10 @@ if ( ! isset($_GET['problem_id']) ) {
 	$file_pathpdf='uploads/'.$pdffilenm;
 	
 	
-	echo $docxfilenm;
-	echo 'wtf';
-	echo $inputdata;
-	echo $file_pathinput;
 	
 	
-	echo 'click on files to download';
+	echo 'Click on files to download';
+	echo "<br>";
 	echo "<br>";
     echo "<a href='".$file_pathdocx."'>".$docxfilenm."</a>";
 	echo "<br>";

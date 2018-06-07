@@ -47,6 +47,20 @@ if(isset($_POST['title'])){
 				':status' => 'num issued'));
 				
 			$pblm_num=$pdo->lastInsertId();
+			
+			
+			// reserve the values in Qa table for the problem so all subsequent edits will be updates the other values will initialize to null in sql
+			for ($i = 1; $i <= 200; $i++) {
+					$sql = "INSERT INTO Qa (problem_id, dex)	
+						VALUES (:problem_id, :dex)";
+					$stmt = $pdo->prepare($sql);
+					$stmt->execute(array(
+						':problem_id'=> $pblm_num,
+						':dex' => $i));
+			
+			}
+			
+			
 				$_SESSION['success'] = 'your problem number is '.$pblm_num;
 				$_SESSION['game_prob_flag']=$game_prob_flag;
 				$file_name = 'p'.$pblm_num.'_'.$game_prob_flag.'_'.$_POST['title'];

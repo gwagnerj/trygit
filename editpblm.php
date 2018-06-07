@@ -228,8 +228,12 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 							} 
 							If ($lines>1){
 								// put the answer data into the data base
-								$sql = "INSERT INTO Qa (problem_id, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j,g1,g2,g3)	
-								VALUES (:problem_id, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j,:g1,:g2,:g3)";
+								//$sql = "INSERT INTO Qa (problem_id, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j,g1,g2,g3)	
+								//VALUES (:problem_id, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j,:g1,:g2,:g3)";
+								$sql = "UPDATE Qa SET problem_id = :problem_id, dex = :dex, ans_a = :ans_a, ans_b = :ans_b, ans_c = :ans_c
+									,ans_d = :ans_d, ans_e = :ans_e, ans_f = :ans_f, ans_g = :ans_g, ans_h = :ans_h, ans_i = :ans_i, ans_j = :ans_j,g1 = :g1, g2 = :g2, g3 = :g3
+									WHERE problem_id = :problem_id AND dex = :dex";
+								
 								$stmt = $pdo->prepare($sql);
 								$stmt->execute(array(
 									':problem_id' => $_POST['problem_id'],
@@ -351,10 +355,10 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 	</label> 
 
 </p>
-<p>Answers a CSV File: <input type='file' name='Qa'/></p>
-<p><b><font color="black">Input values a CSV File: </font></b><input type='file' name='inputdata'/></p>
-<p>Problem statement a Docx file: <input type='file' name='docxfile'/></p>
-<p>Base-case a pdf file: <input type='file' name='pdffile'/></p>
+<p>Answers File: <input type='file' accept='.csv' name='Qa'/></p>
+<p><font color="black">Input File: </font><input type='file' accept='.csv' name='inputdata'/></p>
+<p>Problem statement file: <input type='file' accept='.docx' name='docxfile'/></p>
+<p>Base-case  file: <input type='file' accept='.pdf' name='pdffile'/></p>
 
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
 <p><input type="submit" value="Update"/>
