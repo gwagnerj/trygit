@@ -7,34 +7,41 @@
 Require_once "pdo.php";
 
 // first do some error checking on the input.  If it is not OK set the session failure and send them back to QRPIndex.
-if ( ! isset($_POST['problem_id']) ) {
+if ( ! isset($_GET['problem_id']) ) {
   $_SESSION['error'] = "Missing problem number";
   header('Location: QRPindex.php');
   return;
 }
-if ( ! isset($_POST['dex_num']) ) {
+if ( ! isset($_GET['dex_num']) ) {
   $_SESSION['error'] = "Missing index number";
   header('Location: QRPindex.php');
   return;
 } 
  
-if ($_POST['problem_id']<1 or $_POST['problem_id']>1000000)  {
+if ($_GET['problem_id']<1 or $_GET['problem_id']>1000000)  {
   $_SESSION['error'] = "problem number out of range";
   header('Location: QRPindex.php');
   return;
 }
-if ($_POST['dex_num']<2 or $_POST['dex_num']>200)  {
+if ($_GET['dex_num']<2 or $_GET['dex_num']>200)  {
   $_SESSION['error'] = "Index number out of range";
   header('Location: QRPindex.php');
   return;
 }
+echo $_GET['problem_id'];
+echo "<br>";
+echo $_GET['dex_num'];
 
 // Next check the Qa table and see which values have non null values - for those 
 
-echo $_POST['problem_id'];
-echo "<br>";
-echo $_POST['dex_num'];
-
+$stmt = $pdo->prepare("SELECT * FROM Qa where problem_id = :problem_id AND dex = :dex");
+$stmt->execute(array(":problem_id" => $_GET['problem_id'], ":dex" => $_GET['dex_num']));
+$row = $stmt->fetch(PDO::FETCH_ASSOC);
+if ( $row === false ) {
+    $_SESSION['error'] = 'Bad value for problem_id';
+    header( 'Location: QRPindex.php' ) ;
+    return;
+}
 
 
 
