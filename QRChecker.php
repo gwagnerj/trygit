@@ -11,33 +11,29 @@ if ( ! isset($_POST['problem_id']) ) {
   $_SESSION['error'] = "Missing problem number";
   header('Location: QRPindex.php');
   return;
+}
 if ( ! isset($_POST['dex_num']) ) {
   $_SESSION['error'] = "Missing index number";
   header('Location: QRPindex.php');
   return;
-  
- if ( ! is_int($_POST['problem_id']) ) {
-  $_SESSION['error'] = "Problem number must be an integer";
-  header('Location: QRPindex.php');
-  return;
-if ( ! is_int($_POST['dex_num']) ) {
-  $_SESSION['error'] = "Index number must be an integer";
-  header('Location: QRPindex.php');
-  return; 
-  
+} 
+ 
 if ($_POST['problem_id']<1 or $_POST['problem_id']>1000000)  {
   $_SESSION['error'] = "problem number out of range";
   header('Location: QRPindex.php');
   return;
+}
 if ($_POST['dex_num']<2 or $_POST['dex_num']>200)  {
   $_SESSION['error'] = "Index number out of range";
   header('Location: QRPindex.php');
   return;
-
+}
 
 // Next check the Qa table and see which values have non null values - for those 
 
-
+echo $_POST['problem_id'];
+echo "<br>";
+echo $_POST['dex_num'];
 
 
 
@@ -59,3 +55,6 @@ if ($_POST['dex_num']<2 or $_POST['dex_num']>200)  {
 <h1>QRProblem Checker</h1>
 </header>
 <main>
+</main>
+</body>
+</html>
