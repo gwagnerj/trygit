@@ -81,8 +81,8 @@ for ($i = 0;$i<=9; $i++){  // this would mean the database would always be in th
 		$probParts = $probParts+1;
 		$partsFlag[$i]=true;	
 	
-	
 	}
+	
 //echo $partsFlag[$i].' ';
 //echo $soln[$i];
 //echo "<br>";
@@ -317,16 +317,49 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 <!-- <p> Please put in your index number </p> -->
 <p><font color=#003399>Index Number: </font><input type="text" name="dex_num" size=3 value="<?php echo (htmlentities($_SESSION['index']))?>"  ></p>
 <p> <strong> Fill in - then select "Check" </strong></p>
-<p> a): <input [ type=number]{width: 5%;} name="a" size = 10% value="<?php echo (htmlentities($resp['a']))?>" > <?php echo($unit[0]) ?> &nbsp - <b><?php echo ($corr['a']) ?> </b><?php if (isset($_POST['dex_num']) and @$aWrongCount>$hintLimit and $corr['a']=="Not Correct"){echo '<a href="hints/parta/parta.html" target = "_blank"> hints for this part </a>';} ?>  </p>
-<p> b): <input [ type=number]{width: 5%;} name="b" size = 10% value="<?php echo (htmlentities($b))?>" > L/min &nbsp - <b><?php echo ($bcorr) ?></b><?php if (isset($_POST['dex_num']) and @$bWrongCount>$hintLimit and $bcorr=="Not Correct"){echo '<a href="hints/partb/partb.html" target = "_blank"> hints for this part </a>';} ?> </p>
-<p> c): <input [ type=number]{width: 5%;} name="c" size = 10% value="<?php echo (htmlentities($c))?>" > bar &nbsp - <b><?php echo ($ccorr) ?></b><?php if (isset($_POST['dex_num']) and @$cWrongCount>$hintLimit and $ccorr=="Not Correct"){echo '<a href="hints/partc/partcg.html" target = "_blank"> hints for this part </a>';} ?> </p>
+
+<!--<p> a): <input [ type=number]{width: 5%;} name="a" size = 10% value="<?php echo (htmlentities($resp['a']))?>" > <?php echo($unit[0]) ?> &nbsp - <b><?php echo ($corr['a']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[0]>$hintLimit and $corr['a']=="Not Correct"){echo '<a href="hints/parta/parta.html" target = "_blank"> hints for this part </a>';} ?>  </p> -->
+
+<?php
+if ($partsFlag[0]){ ?> 
+<p> a): <input [ type=number]{width: 5%;} name="a" size = 10% value="<?php echo (htmlentities($resp['a']))?>" > <?php echo($unit[0]) ?> &nbsp - <b><?php echo ($corr['a']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[0]>$hintLimit and $corr['a']=="Not Correct"){echo '<a href="hints/parta/parta.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[1]){ ?> 
+<p> b): <input [ type=number]{width: 5%;} name="b" size = 10% value="<?php echo (htmlentities($resp['b']))?>" > <?php echo($unit[1]) ?> &nbsp - <b><?php echo ($corr['b']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[1]>$hintLimit and $corr['b']=="Not Correct"){echo '<a href="hints/partb/partb.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[2]){ ?> 
+<p> c): <input [ type=number]{width: 5%;} name="c" size = 10% value="<?php echo (htmlentities($resp['c']))?>" > <?php echo($unit[2]) ?> &nbsp - <b><?php echo ($corr['c']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[2]>$hintLimit and $corr['c']=="Not Correct"){echo '<a href="hints/partc/partc.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[3]){ ?> 
+<p> d): <input [ type=number]{width: 5%;} name="d" size = 10% value="<?php echo (htmlentities($resp['d']))?>" > <?php echo($unit[3]) ?> &nbsp - <b><?php echo ($corr['d']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[3]>$hintLimit and $corr['d']=="Not Correct"){echo '<a href="hints/partd/partd.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[4]){ ?> 
+<p> e): <input [ type=number]{width: 5%;} name="e" size = 10% value="<?php echo (htmlentities($resp['e']))?>" > <?php echo($unit[4]) ?> &nbsp - <b><?php echo ($corr['e']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[4]>$hintLimit and $corr['e']=="Not Correct"){echo '<a href="hints/parte/parte.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[5]){ ?> 
+<p> f): <input [ type=number]{width: 5%;} name="f" size = 10% value="<?php echo (htmlentities($resp['f']))?>" > <?php echo($unit[5]) ?> &nbsp - <b><?php echo ($corr['f']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[5]>$hintLimit and $corr['f']=="Not Correct"){echo '<a href="hints/partf/partf.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[6]){ ?> 
+<p> g): <input [ type=number]{width: 5%;} name="g" size = 10% value="<?php echo (htmlentities($resp['g']))?>" > <?php echo($unit[6]) ?> &nbsp - <b><?php echo ($corr['g']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[6]>$hintLimit and $corr['g']=="Not Correct"){echo '<a href="hints/partg/partg.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[7]){ ?> 
+<p> h): <input [ type=number]{width: 5%;} name="h" size = 10% value="<?php echo (htmlentities($resp['h']))?>" > <?php echo($unit[7]) ?> &nbsp - <b><?php echo ($corr['h']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[7]>$hintLimit and $corr['h']=="Not Correct"){echo '<a href="hints/parth/parth.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[8]){ ?> 
+<p> i): <input [ type=number]{width: 5%;} name="i" size = 10% value="<?php echo (htmlentities($resp['i']))?>" > <?php echo($unit[8]) ?> &nbsp - <b><?php echo ($corr['i']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[8]>$hintLimit and $corr['i']=="Not Correct"){echo '<a href="hints/parti/parti.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+if ($partsFlag[9]){ ?> 
+<p> j): <input [ type=number]{width: 5%;} name="j" size = 10% value="<?php echo (htmlentities($resp['j']))?>" > <?php echo($unit[9]) ?> &nbsp - <b><?php echo ($corr['j']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[9]>$hintLimit and $corr['j']=="Not Correct"){echo '<a href="hints/partj/partj.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<?php } 
+
+/* <p> c): <input [ type=number]{width: 5%;} name="c" size = 10% value="<?php echo (htmlentities($c))?>" > bar &nbsp - <b><?php echo ($ccorr) ?></b><?php if (isset($_POST['dex_num']) and @$cWrongCount>$hintLimit and $ccorr=="Not Correct"){echo '<a href="hints/partc/partcg.html" target = "_blank"> hints for this part </a>';} ?> </p>
 <p> d): <input [ type=number]{width: 5%;} name="d" size = 10% value="<?php echo (htmlentities($d))?>" > kJ/kg &nbsp - <b><?php echo ($dcorr) ?></b><?php if (isset($_POST['dex_num']) and @$dWrongCount>$hintLimit and $dcorr=="Not Correct"){echo '<a href="hints/partd/partdh.html" target = "_blank"> hints for this part </a>';} ?> </p>
 <p> e): <input [ type=number]{width: 5%;} name="e" size = 10% value="<?php echo (htmlentities($e))?>" > kg/min &nbsp - <b><?php echo ($ecorr) ?></b><?php if (isset($_POST['dex_num']) and @$eWrongCount>$hintLimit and $ecorr=="Not Correct"){echo '<a href="hints/parte/parte.html" target = "_blank"> hints for this part </a>';} ?> </p>
 <p> f): <input [ type=number]{width: 5%;} name="f" size = 10% value="<?php echo (htmlentities($f))?>" > deg C &nbsp - <b><?php echo ($fcorr) ?></b><?php if (isset($_POST['dex_num']) and @$fWrongCount>$hintLimit and $fcorr=="Not Correct"){echo '<a href="hints/partf/partf.html" target = "_blank"> hints for this part </a>';} ?> </p>
 <p> g): <input [ type=number]{width: 5%;} name="g" size = 10% value="<?php echo (htmlentities($g))?>" > bar &nbsp - <b><?php echo ($gcorr) ?></b><?php if (isset($_POST['dex_num']) and @$gWrongCount>$hintLimit and $gcorr=="Not Correct"){echo '<a href="hints/partc/partcg.html" target = "_blank"> hints for this part </a>';} ?> </p>
 <p> h): <input [ type=number]{width: 5%;} name="h" size = 10% value="<?php echo (htmlentities($h))?>" > kW &nbsp - <b><?php echo ($hcorr) ?></b><?php if (isset($_POST['dex_num']) and @$hWrongCount>$hintLimit and $hcorr=="Not Correct"){echo '<a href="hints/partd/partdh.html" target = "_blank"> hints for this part </a>';} ?> </p>
-
-
+  */
+?>
 
 <!--<p>Grading Scheme: <input type="text" name="grade_scheme" ></p> -->
 <p><input type = "submit" value="Check" size="10" style = "width: 30%; background-color: #003399; color: white"/> &nbsp &nbsp <b> <font size="4" color="Navy">Score:  <?php echo ($PScore) ?>%</font></b></p>
