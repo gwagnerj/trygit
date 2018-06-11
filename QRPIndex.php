@@ -1,6 +1,8 @@
 <?php
 //require_once "pdo.php";
-session_start();
+
+session_unset();
+//session_start();
 ?>
 
 <!DOCTYPE html>

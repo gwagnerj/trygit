@@ -32,16 +32,53 @@ if ($_GET['dex_num']<2 or $_GET['dex_num']>200)  {
 $_SESSION['index'] = $_GET['dex_num'];
 
 
-if ( isset($_GET['problem_id']) ) {
+if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
 	$_SESSION['problem_id'] = $_GET['problem_id'];
-}
 
-if ( isset($_GET['dex_num']) ) {
 	$_SESSION['index'] = $_GET['dex_num'];
+	
+		for ($j=0;$j<9;$j++){
+			$wrongCount[$j]=0;
+			
+		}	
+		$_SESSION['wrongC']=$wrongCount; 
+	
+	
+	
+	
+	
+	
+	
 }
+	
+	// initialize some variables
+	
+	$probParts=0;
+	//$partsFlag = array('a'=>false,'b'=>false,'c'=>false,'d'=>false,'e'=>false,'f'=>false,'g'=>false,'h'=>false,'i'=>false,'j'=>false);
+	$resp = array('a'=>"r",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
+	$corr = array('a'=>"",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
+	$unit = array('a'=>"",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
+	$tol=array('a'=>0.02,'b'=>0.02,'c'=>0.02,'d'=>0.02,'e'=>0.02,'f'=>0.02,'g'=>0.02,'h'=>0.02,'i'=>0.02,'j'=>0.02);	
+	for ($j=0;$j<9;$j++){
+		$wrongCount[$j]=0;
+		
+	}	
+	$_SESSION['wrongC']=$wrongCount; 
+	
+	$hintLimit = 3;
+	$disBasecaseAns = 0;
+	
+	
+	$count='';  // counts the times the check button is placed
+	$score=0.0;
+
+	$tol_key=array_keys($tol);
+	$resp_key=array_keys($resp);
+	$corr_key=array_keys($corr);
 
 
-// Next check the Qa table and see which values have non null values - for those 
+		
+	// Next check the Qa table and see which values have non null values - for those 
 
 $stmt = $pdo->prepare("SELECT * FROM Qa where problem_id = :problem_id AND dex = :dex");
 $stmt->execute(array(":problem_id" => $_SESSION['problem_id'], ":dex" => $_SESSION['index']));
@@ -51,44 +88,48 @@ if ( $row === false ) {
     $_SESSION['error'] = 'Bad value for problem_id';
     header( 'Location: QRPindex.php' ) ;
     return;
-}
-
-// initialize some variables
-$soln = array_slice($row,6);
-/* for($i=3;$i<=12;$i++){
-	$soln[$i-3]=$row[$i];
-} */
-
-/* print_r($soln);
-$k=0;
-echo ('<br>');
-echo $soln[$k];
-echo ('<br>'); */
-
-$probParts=0;
-$partsFlag = array('a'=>false,'b'=>false,'c'=>false,'d'=>false,'e'=>false,'f'=>false,'g'=>false,'h'=>false,'i'=>false,'j'=>false);
-$resp = array('a'=>"r",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
-$corr = array('a'=>"n",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
-$unit = array('a'=>"n",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
-$tol=array('a'=>0.02,'b'=>0.02,'c'=>0.02,'d'=>0.02,'e'=>0.02,'f'=>0.02,'g'=>0.02,'h'=>0.02,'i'=>0.02,'j'=>0.02);
-$wrongCount = array('a'=>0,'b'=>0,'c'=>0,'d'=>0,'e'=>0,'f'=>0,'g'=>0,'h'=>0,'i'=>0,'j'=>0);
-
-$count='';  // counts the times the check button is placed
-$score=0.0;
-
-for ($i = 0;$i<=9; $i++){  // this would mean the database would always be in the same form
-	if ($soln[$i]!=="Null") {
-		$probParts = $probParts+1;
-		$partsFlag[$i]=true;	
+}	
+		$soln = array_slice($row,6); // this would mean the database table Qa would have the dame structure
 	
+
+	for ($i = 0;$i<=9; $i++){  
+		if ($soln[$i]==1.2345e43) {
+			$partsFlag[$i]=false;
+		} else {
+			$probParts = $probParts+1;
+			$partsFlag[$i]=true;
+		}
 	}
+	//get the tolerance for each part - only really need to do this once on the get request - change if it is slow
+	$stmt = $pdo->prepare("SELECT * FROM Problem where problem_id = :problem_id");
+	$stmt->execute(array(":problem_id" => $_SESSION['problem_id']));
+	//$row = $stmt->fetch(PDO::FETCH_ASSOC);
+	$row = $stmt -> fetch();
+	if ( $row === false ) {
+		$_SESSION['error'] = 'Bad value for problem_id';
+		header( 'Location: QRPindex.php' ) ;
+		return;
+	}	
+	$probData=$row;	
+	//echo $probData['tol_a'];
 	
-//echo $partsFlag[$i].' ';
-//echo $soln[$i];
-//echo "<br>";
-//echo array_keys($corr)[0];	
+	$tol['a']=$probData['tol_a']*0.01;	
+	$tol['b']=$probData['tol_b']*0.01;
+	$tol['c']=$probData['tol_c']*0.01;	
+	$tol['d']=$probData['tol_d']*0.01;
+	$tol['e']=$probData['tol_e']*0.01;	
+	$tol['f']=$probData['tol_f']*0.01;
+	$tol['g']=$probData['tol_g']*0.01;	
+	$tol['h']=$probData['tol_h']*0.01;
+	$tol['i']=$probData['tol_i']*0.01;	
+	$tol['j']=$probData['tol_j']*0.01;	
 	
-}
+	$unit = array_slice($row,22,20);  // dows the same thing but easier so long as the table always has the same structure
+	//print_r($unit);
+
+
+	
+
 //echo "the number of parts for this problem is ". $probParts;	
 
 // test to see if the instructor put in the code to get the answers					
@@ -127,95 +168,81 @@ if(!($_SESSION['count'])){
 }
 // read the student responses into an array
 	$resp['a']=$_POST['a']+0;
-	$resp['b']=floatval($_POST['b'])+0;
-	$resp['c']=floatval($_POST['c'])+0;
-	$resp['d']=floatval($_POST['d'])+0;
-	$resp['e']=floatval($_POST['e'])+0;
-	$resp['f']=floatval($_POST['f'])+0;
-	$resp['g']=floatval($_POST['g'])+0;
-	$resp['h']=floatval($_POST['h'])+0;
-	$resp['i']=floatval($_POST['i'])+0;
-	$resp['j']=floatval($_POST['j'])+0;
-
-	//get the tolerance for each part - only really need to do this once on the get request - change if it is slow
-	$stmt = $pdo->prepare("SELECT * FROM Problem where problem_id = :problem_id");
-	$stmt->execute(array(":problem_id" => $_SESSION['problem_id']));
-	//$row = $stmt->fetch(PDO::FETCH_ASSOC);
-	$row = $stmt -> fetch();
-	if ( $row === false ) {
-		$_SESSION['error'] = 'Bad value for problem_id';
-		header( 'Location: QRPindex.php' ) ;
-		return;
-	}	
-	$probData=$row;	
-	//echo $probData['tol_a'];
+	$resp['b']=$_POST['b']+0;
+	$resp['c']=$_POST['c']+0;
+	$resp['d']=$_POST['d']+0;
+	$resp['e']=$_POST['e']+0;
+	$resp['f']=$_POST['f']+0;
+	$resp['g']=$_POST['g']+0;
+	$resp['h']=$_POST['h']+0;
+	$resp['i']=$_POST['i']+0;
+	$resp['j']=$_POST['j']+0;
 	
-	$tol['a']=$probData['tol_a']*0.01;	
-	$tol['b']=$probData['tol_b']*0.01;
-	$tol['c']=$probData['tol_c']*0.01;	
-	$tol['d']=$probData['tol_d']*0.01;
-	$tol['e']=$probData['tol_e']*0.01;	
-	$tol['f']=$probData['tol_f']*0.01;
-	$tol['g']=$probData['tol_g']*0.01;	
-	$tol['h']=$probData['tol_h']*0.01;
-	$tol['i']=$probData['tol_i']*0.01;	
-	$tol['j']=$probData['tol_j']*0.01;	
 	
-	$unit = array_slice($row,22,20);
-	//print_r($unit);
-
-	$tol_key=array_keys($tol);
-	$resp_key=array_keys($resp);
-	$corr_key=array_keys($corr);
-	//$unit_key=array_keys($unit);
-	
+/* print_r( $partsFlag);
+echo '<br>';
+print_r( $soln);
+echo '<br>';
+print_r( $tol);
+echo '<br>';
+print_r( $resp);
+echo '<br>';
+for ($k=0;$k<=9;$k++){
+	echo $resp[$resp_key[$k]];
+	echo '<br>';
+}	 */
 	For ($j=0; $j<10; $j++) {
-	
-	/* echo($soln[$j]);
-	echo("<br>");
-	echo($tol[$tol_key[$j]]);
-	echo("<br>");
-	echo($resp[$resp_key[$j]]);
-	echo("<br>"); */
-	
-		If ($soln[$j]>((1-$tol[$tol_key[$j]])*$resp[$resp_key[$j]]) and ($soln[$j]<((1+$tol[$tol_key[$j]]))*($resp[$resp_key[$j]]))) //if the correct value is within the response plus or minus the tolerance
-					{
+		if($partsFlag[$j]) {
+				//If ($soln[$j]>((1-$tol[$tol_key[$j]])*$resp[$resp_key[$j]]) and ($soln[$j]<((1+$tol[$tol_key[$j]]))*($resp[$resp_key[$j]]))) //if the correct value is within the response plus or minus the tolerance
 							
-							$corr[$corr_key[$j]]='Correct';
-							$score=$score+1;		
-					}
-			Else
-			{
-			
-					
-				//count the number of times they got this part wrong if they entered a nonzero value
+				if($soln[$j]==0){  // take care of the zero solution case
+					$sol=1;
+				} else {
+					$sol=$soln[$j];
+				}	
 				
-					if(!(isset($_SESSION['wrongCount[$j]'])))
-					{
+				if(	abs(($soln[$j]-$resp[$resp_key[$j]])/$sol)<=$tol[$tol_key[$j]]) {
+							
+							
+									
+									$corr[$corr_key[$j]]='Correct';
+									$score=$score+1;
+									$_SESSION['$wrongC'[$j]] = 0;
+									$wrongCount[$j]=0;
+											
+							}
+					Else  // got it wrong or did not attempt
+				{
+					
+							
 						
-						$_SESSION['wrongCount[$j]'] = 0;
-						$wrongCount[$j]=0;
-						echo $_SESSION['wrongCount[$j]'];
-					//	echo ($aWrongCount);
 						
-					}
-					elseif ($resp[$resp_key[$j]]!==0)
-					{
-						
-						$wrongCount[$j] = $_SESSION['wrongCount[$j]'] + 1;
-						$_SESSION['wrongCount[$j]'] = $wrongCount[$j];
-						$corr[$corr_key[$j]]='Not Correct';
-					//	echo ($wrongCount[$j]);
-					}
-					else
-					{
-					$wrongCount[$j] = $_SESSION['wrongCount[$j]'];
-						$_SESSION['wrongCount[$j]'] = $wrongCount[$j];
-						$corr[$corr_key[$j]]='';
-					//	echo ($wrongCount[$j]);	
-					}
-			}		
-
+							if(!(isset($_SESSION['wrongC'[$j]])))  // needs initialized
+							{
+								
+								$_SESSION['$wrongC'[$j]] = 0;
+								$wrongCount[$j]=0;
+								//echo $_SESSION['wrongC'[$j]];
+							
+								
+							}
+							elseif ($resp[$resp_key[$j]]!==0)  // got it wrong and attempted it
+							{
+								
+								$wrongCount[$j] = ($_SESSION['wrongC'[$j]]) + 1;
+								$_SESSION['wrongC'[$j]] = $wrongCount[$j];
+								$corr[$corr_key[$j]]='Not Correct';
+							//	echo ($wrongCount[$j]);
+							}
+							else  // response is equal to zero so probably did not answer (better to use POST value I suppose - fix later
+							{
+							$wrongCount[$j] = $_SESSION['wrongC'[$j]];
+							//	$_SESSION['wrongC'[$j]] = $wrongCount[$j];
+								$corr[$corr_key[$j]]='';
+							//	echo ($wrongCount[$j]);	
+							}
+				}		
+		}
 	}
 
 	
@@ -288,6 +315,7 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 		echo ("</td>");
 		
 	}
+//	print_r ($wrongCount);
 ?>
 </table>
 
@@ -318,7 +346,6 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 <p><font color=#003399>Index Number: </font><input type="text" name="dex_num" size=3 value="<?php echo (htmlentities($_SESSION['index']))?>"  ></p>
 <p> <strong> Fill in - then select "Check" </strong></p>
 
-<!--<p> a): <input [ type=number]{width: 5%;} name="a" size = 10% value="<?php echo (htmlentities($resp['a']))?>" > <?php echo($unit[0]) ?> &nbsp - <b><?php echo ($corr['a']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[0]>$hintLimit and $corr['a']=="Not Correct"){echo '<a href="hints/parta/parta.html" target = "_blank"> hints for this part </a>';} ?>  </p> -->
 
 <?php
 if ($partsFlag[0]){ ?> 
@@ -352,13 +379,7 @@ if ($partsFlag[9]){ ?>
 <p> j): <input [ type=number]{width: 5%;} name="j" size = 10% value="<?php echo (htmlentities($resp['j']))?>" > <?php echo($unit[9]) ?> &nbsp - <b><?php echo ($corr['j']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[9]>$hintLimit and $corr['j']=="Not Correct"){echo '<a href="hints/partj/partj.html" target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 
-/* <p> c): <input [ type=number]{width: 5%;} name="c" size = 10% value="<?php echo (htmlentities($c))?>" > bar &nbsp - <b><?php echo ($ccorr) ?></b><?php if (isset($_POST['dex_num']) and @$cWrongCount>$hintLimit and $ccorr=="Not Correct"){echo '<a href="hints/partc/partcg.html" target = "_blank"> hints for this part </a>';} ?> </p>
-<p> d): <input [ type=number]{width: 5%;} name="d" size = 10% value="<?php echo (htmlentities($d))?>" > kJ/kg &nbsp - <b><?php echo ($dcorr) ?></b><?php if (isset($_POST['dex_num']) and @$dWrongCount>$hintLimit and $dcorr=="Not Correct"){echo '<a href="hints/partd/partdh.html" target = "_blank"> hints for this part </a>';} ?> </p>
-<p> e): <input [ type=number]{width: 5%;} name="e" size = 10% value="<?php echo (htmlentities($e))?>" > kg/min &nbsp - <b><?php echo ($ecorr) ?></b><?php if (isset($_POST['dex_num']) and @$eWrongCount>$hintLimit and $ecorr=="Not Correct"){echo '<a href="hints/parte/parte.html" target = "_blank"> hints for this part </a>';} ?> </p>
-<p> f): <input [ type=number]{width: 5%;} name="f" size = 10% value="<?php echo (htmlentities($f))?>" > deg C &nbsp - <b><?php echo ($fcorr) ?></b><?php if (isset($_POST['dex_num']) and @$fWrongCount>$hintLimit and $fcorr=="Not Correct"){echo '<a href="hints/partf/partf.html" target = "_blank"> hints for this part </a>';} ?> </p>
-<p> g): <input [ type=number]{width: 5%;} name="g" size = 10% value="<?php echo (htmlentities($g))?>" > bar &nbsp - <b><?php echo ($gcorr) ?></b><?php if (isset($_POST['dex_num']) and @$gWrongCount>$hintLimit and $gcorr=="Not Correct"){echo '<a href="hints/partc/partcg.html" target = "_blank"> hints for this part </a>';} ?> </p>
-<p> h): <input [ type=number]{width: 5%;} name="h" size = 10% value="<?php echo (htmlentities($h))?>" > kW &nbsp - <b><?php echo ($hcorr) ?></b><?php if (isset($_POST['dex_num']) and @$hWrongCount>$hintLimit and $hcorr=="Not Correct"){echo '<a href="hints/partd/partdh.html" target = "_blank"> hints for this part </a>';} ?> </p>
-  */
+
 ?>
 
 <!--<p>Grading Scheme: <input type="text" name="grade_scheme" ></p> -->

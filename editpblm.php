@@ -208,7 +208,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 		
 						While($data=fgetcsv($handle)) {
 							 If ($lines==0){
-								// put the units in the problem table
+								// put the tolerances in the problem table
 								$sql = "UPDATE Problem SET tol_a = :tol_a, tol_b = :tol_b,tol_c = :tol_c, tol_d = :tol_d, 
 										tol_e = :tol_e, tol_f = :tol_f,tol_g = :tol_g, tol_h = :tol_h,tol_i = :tol_i, tol_j = :tol_j
 										WHERE problem_id = :pblm_num";
@@ -246,6 +246,11 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 										':pblm_num' => $_POST['problem_id']));
 							} 
 							If ($lines>1){
+								
+								
+								
+								
+								
 								// put the answer data into the data base
 								//$sql = "INSERT INTO Qa (problem_id, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j,g1,g2,g3)	
 								//VALUES (:problem_id, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j,:g1,:g2,:g3)";
