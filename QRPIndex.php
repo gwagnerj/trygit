@@ -2,7 +2,7 @@
 //require_once "pdo.php";
 
 session_unset();
-//session_start();
+session_start();
 ?>
 
 <!DOCTYPE html>

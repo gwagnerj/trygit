@@ -58,7 +58,9 @@ if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
 	$resp = array('a'=>"r",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
 	$corr = array('a'=>"",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
 	$unit = array('a'=>"",'b'=>"",'c'=>"",'d'=>"",'e'=>"",'f'=>"",'g'=>"",'h'=>"",'i'=>"",'j'=>"");
-	$tol=array('a'=>0.02,'b'=>0.02,'c'=>0.02,'d'=>0.02,'e'=>0.02,'f'=>0.02,'g'=>0.02,'h'=>0.02,'i'=>0.02,'j'=>0.02);	
+	$tol=array('a'=>0.02,'b'=>0.02,'c'=>0.02,'d'=>0.02,'e'=>0.02,'f'=>0.02,'g'=>0.02,'h'=>0.02,'i'=>0.02,'j'=>0.02);
+	$ansFormat=array('ans_a' =>"",'ans_b' =>"",	'ans_c' =>"",'ans_d' =>"",'ans_e' =>"",'ans_f' =>"",	'ans_g' =>"",'ans_h' =>"",'ans_i' =>"",'ans_j' );
+	
 	for ($j=0;$j<9;$j++){
 		$wrongCount[$j]=0;
 		
@@ -66,7 +68,7 @@ if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
 	$_SESSION['wrongC']=$wrongCount; 
 	
 	$hintLimit = 3;
-	$disBasecaseAns = 0;
+	$dispBase = 1;
 	
 	
 	$count='';  // counts the times the check button is placed
@@ -75,8 +77,8 @@ if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
 	$tol_key=array_keys($tol);
 	$resp_key=array_keys($resp);
 	$corr_key=array_keys($corr);
-
-
+	$ansFormat_key=array_keys($ansFormat);
+	
 		
 	// Next check the Qa table and see which values have non null values - for those 
 
@@ -136,16 +138,11 @@ if ( $row === false ) {
 					
 	$dispAns=substr($_POST['dex_num'],0,7);
 
-	if($dispAns=="McKetta" or ($_POST['dex_num']==1 and $disBasecaseAns))
-	{
-		if($disBasecaseAns and $_POST['dex_num']==1)
-		{
-			$index = $_POST['dex_num']+0;
-		}
-		else
-		{
+	if($dispAns=="McKetta" ){
+		
+		
 		$index=substr($_POST['dex_num'],7)+0;
-		}
+		
 		$dispAnsflag=True;
 	
 	}
@@ -315,6 +312,20 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 		echo ("</td>");
 		
 	}
+	
+		$stmt = $pdo->prepare("SELECT * FROM Qa where problem_id = :problem_id AND dex = :dex");
+		$stmt->execute(array(":problem_id" => $_SESSION['problem_id'], ":dex" => 1));
+		//$row = $stmt->fetch(PDO::FETCH_ASSOC);
+		$row = $stmt -> fetch();
+		
+			for ($j=0;$j<=9;$j++){
+				$baseAns[$corr_key[$j]]=$row[$ansFormat_key[$j]];
+			}
+			
+	
+	
+	
+	
 //	print_r ($wrongCount);
 ?>
 </table>
@@ -385,7 +396,11 @@ if ($partsFlag[9]){ ?>
 <!--<p>Grading Scheme: <input type="text" name="grade_scheme" ></p> -->
 <p><input type = "submit" value="Check" size="10" style = "width: 30%; background-color: #003399; color: white"/> &nbsp &nbsp <b> <font size="4" color="Navy">Score:  <?php echo ($PScore) ?>%</font></b></p>
 
+
 </form>
+
+
+
 
 <p> Count: <?php echo ($count) ?> </p>
 
@@ -403,7 +418,46 @@ if ($partsFlag[9]){ ?>
  <hr>
 </form>
 
+<form method = "POST">
+<p><input type = "submit" value="Get Base-Case Answers" name = "show_base" size="10" style = "width: 30%; background-color: green; color: white"/> &nbsp &nbsp <b> <font size="4" color="Green"></font></b></p>
+</form>
 
+
+<?php
+
+
+if(isset($_POST['show_base']) and $dispBase){
+	
+		echo "<table>";
+		echo "Base-Case Answers:";
+		echo '<table border="1">';
+		
+			for ($j=0;$j<=9;$j++){
+				if($partsFlag[$j]){
+					echo	("<th>$corr_key[$j]</th>");
+				}
+				
+				//echo ("</td><td>");
+			}
+			//echo ("</td>");
+			
+			echo "<tr>";
+			for ($j=0;$j<=9;$j++){
+				if($partsFlag[$j]){
+					echo ("<td>");
+					echo ($baseAns[$corr_key[$j]]);
+					echo ("</td>");
+				}
+		
+			}
+
+	}
+
+
+
+
+
+?>
 
 
 
