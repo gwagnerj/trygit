@@ -37,11 +37,14 @@ if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
 
 	$_SESSION['index'] = $_GET['dex_num'];
 	
-		for ($j=0;$j<9;$j++){
-			$wrongCount[$j]=0;
-			
-		}	
-		$_SESSION['wrongC']=$wrongCount; 
+	
+		if (!isset($_POST['dex_num'])){
+			for ($j=0;$j<=9;$j++){
+				$wrongCount[$j]=0;
+				$_SESSION['wrongC'[$j]]=$wrongCount[$j]; 
+			}
+		}		
+		//$_SESSION['wrongC']=$wrongCount; 
 	
 	
 	
@@ -176,19 +179,19 @@ if(!($_SESSION['count'])){
 	$resp['j']=$_POST['j']+0;
 	
 	
-/* print_r( $partsFlag);
-echo '<br>';
-print_r( $soln);
-echo '<br>';
-print_r( $tol);
-echo '<br>';
-print_r( $resp);
-echo '<br>';
-for ($k=0;$k<=9;$k++){
-	echo $resp[$resp_key[$k]];
-	echo '<br>';
-}	 */
-	For ($j=0; $j<10; $j++) {
+//print_r($partsFlag);
+//echo '<br>';
+//print_r( $soln);
+//echo '<br>';
+//print_r( $tol);
+//echo '<br>';
+//print_r( $resp);
+//echo '<br>';
+//for ($k=0;$k<=9;$k++){
+//	echo $resp[$resp_key[$k]];
+//	echo '<br>';
+//}	 
+	For ($j=0; $j<=9; $j++) {
 		if($partsFlag[$j]) {
 				//If ($soln[$j]>((1-$tol[$tol_key[$j]])*$resp[$resp_key[$j]]) and ($soln[$j]<((1+$tol[$tol_key[$j]]))*($resp[$resp_key[$j]]))) //if the correct value is within the response plus or minus the tolerance
 							
@@ -198,7 +201,7 @@ for ($k=0;$k<=9;$k++){
 					$sol=$soln[$j];
 				}	
 				
-				if(	abs(($soln[$j]-$resp[$resp_key[$j]])/$sol)<=$tol[$tol_key[$j]]) {
+				if(	abs(($soln[$j]-$resp[$resp_key[$j]])/$sol)<= $tol[$tol_key[$j]]) {
 							
 							
 									
@@ -208,7 +211,7 @@ for ($k=0;$k<=9;$k++){
 									$wrongCount[$j]=0;
 											
 							}
-					Else  // got it wrong or did not attempt
+				Else  // got it wrong or did not attempt
 				{
 					
 							
@@ -219,24 +222,25 @@ for ($k=0;$k<=9;$k++){
 								
 								$_SESSION['$wrongC'[$j]] = 0;
 								$wrongCount[$j]=0;
+								echo 'im here';
 								//echo $_SESSION['wrongC'[$j]];
 							
 								
 							}
-							elseif ($resp[$resp_key[$j]]!==0)  // got it wrong and attempted it
+							elseif ($resp[$resp_key[$j]]==0)  // got it wrong and attempted it
 							{
 								
-								$wrongCount[$j] = ($_SESSION['wrongC'[$j]]) + 1;
-								$_SESSION['wrongC'[$j]] = $wrongCount[$j];
-								$corr[$corr_key[$j]]='Not Correct';
+								$wrongCount[$j] = ($_SESSION['wrongC'[$j]]);
+								//$_SESSION['wrongC'[$j]] = $wrongCount[$j];
+								$corr[$corr_key[$j]]='';
 							//	echo ($wrongCount[$j]);
 							}
 							else  // response is equal to zero so probably did not answer (better to use POST value I suppose - fix later
 							{
-							$wrongCount[$j] = $_SESSION['wrongC'[$j]];
-							//	$_SESSION['wrongC'[$j]] = $wrongCount[$j];
-								$corr[$corr_key[$j]]='';
-							//	echo ($wrongCount[$j]);	
+								$wrongCount[$j] = ($_SESSION['wrongC'[$j]])+1;
+								$_SESSION['wrongC'[$j]] = $wrongCount[$j];
+									$corr[$corr_key[$j]]='Not Correct';
+								//	echo ($wrongCount[$j]);	
 							}
 				}		
 		}
@@ -326,7 +330,9 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 	
 	
 	
-//	print_r ($wrongCount);
+//	print_r ($_SESSION['wrongC']);
+//		print_r ($wrongCount);
+	//print_r ($corr);
 ?>
 </table>
 
@@ -348,7 +354,7 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 <main>
 
 
-
+<p> Problem Number: <?php echo ($_SESSION['problem_id']) ?> </p>
 
 
 <form autocomplete="off" method="POST" >

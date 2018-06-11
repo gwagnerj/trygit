@@ -53,7 +53,7 @@ session_destroy();
 <p><b><font size=5>Your rtn Code: <font color = "blue"><?php echo ($_SESSION['rtn_Code'])?></font></font></b></p>
 <p><br></p>
 
-<a href="QRPindex.php"><b> back </b></a>
+<a href="QRPindex.php"><b> Return to Main Screen</b></a>
 
 </main>
 
