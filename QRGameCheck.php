@@ -226,7 +226,7 @@ if(!($_SESSION['count'])){
 	$rand2=rand(0,9);				// sets up the rtn code on the other page
 	$_SESSION['rand']=$rand;
 	$_SESSION['rand2']=$rand2;
-
+	$_SESSION['points']=$score;
 	
 if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 	{
@@ -361,7 +361,7 @@ if ($partsFlag[9]){ ?>
 ?>
 
 <!--<p>Grading Scheme: <input type="text" name="grade_scheme" ></p> -->
-<p><input type = "submit" value="Check" size="10" style = "width: 30%; background-color: #003399; color: white"/> &nbsp &nbsp <b> <font size="4" color="Navy">Score:  <?php echo ($PScore) ?>%</font></b></p>
+<p><input type = "submit" value="Check" size="10" style = "width: 30%; background-color: #003399; color: white"/> &nbsp &nbsp <b> <font size="4" color="Navy">Score:  <?php echo (round($PScore)) ?>%</font></b></p>
 
 
 </form>
