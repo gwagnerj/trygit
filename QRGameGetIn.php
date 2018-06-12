@@ -16,6 +16,7 @@ if ($_GET['problem_id']<1 or $_GET['problem_id']>1000000)  {
 
 $_SESSION['problem_id'] = $_GET['problem_id'];
 $_SESSION['count']=0;
+$_SESSION['startTime'] = time();
 
 	$stmt = $pdo->prepare("SELECT * FROM Problem where problem_id = :problem_id");
 	$stmt->execute(array(":problem_id" => $_SESSION['problem_id']));

@@ -357,7 +357,7 @@ if ($partsFlag[9]){ ?>
 <p> j): <input [ type=number]{width: 5%;} name="j" size = 10% value="<?php echo (htmlentities($resp['j']))?>" > <?php echo($unit[9]) ?> &nbsp - <b><?php echo ($corr['j']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[9]>$hintLimit and $corr['j']=="Not Correct"){echo '<a href="hints/partj/partj.html" target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 
-
+$_SESSION['time']=time();
 ?>
 
 <!--<p>Grading Scheme: <input type="text" name="grade_scheme" ></p> -->
