@@ -10,11 +10,12 @@ if ( ! isset($_GET['problem_id']) ) {
 }
 if ($_GET['problem_id']<1 or $_GET['problem_id']>1000000)  {
   $_SESSION['error'] = "problem number out of range";
-  header('Location: QRPindex.php');
+  header('Location: QRGameindex.php');
   return;
 }
 
 $_SESSION['problem_id'] = $_GET['problem_id'];
+$_SESSION['count']=0;
 
 	$stmt = $pdo->prepare("SELECT * FROM Problem where problem_id = :problem_id");
 	$stmt->execute(array(":problem_id" => $_SESSION['problem_id']));
@@ -34,7 +35,11 @@ $_SESSION['problem_id'] = $_GET['problem_id'];
 			header('Location: QRGameindex.php');
 			return;
 	}
-
+//echo $_SESSION['problem_id'];
+//echo '<br>';
+//echo $_SESSION['index'];
+//echo '<br>';
+//die();
 
 	$stmt = $pdo->prepare("SELECT * FROM Qa where problem_id = :problem_id AND dex = :dex");
 	$stmt->execute(array(":problem_id" => $_SESSION['problem_id'], ":dex" => $_SESSION['index']));
@@ -85,15 +90,33 @@ if ( isset($_SESSION['success']) ) {
 
 ?>
 
-<p> Rectangle = <?php echo ($_SESSION['g1']);?> </p>
-<p> Oval = <?php echo ($_SESSION['g2']);?> </p>
-<p> Trapezoid = <?php echo ($_SESSION['g3']);?> </p>
+
+<svg  width="400" height="100" >
+  <rect  fill="white" stroke="blue" stroke-width="5" width="300" height = "75" x="15"/>
+  <text x="125" y="50" text-anchor="middle" fill="black" font-size="25">Rect: <?php echo ($_SESSION['g1']);?></text>
+</svg>
+
+
+<svg height="140" width="400">
+  <ellipse cx="130" cy="70" rx="100" ry="40"
+  style="fill:white ;stroke:red;stroke-width:4" />
+   <text x="130" y="80" text-anchor="middle" fill="black" font-size="25">Ellip: <?php echo ($_SESSION['g2']);?></text>
+</svg>
+
+
+
+<svg  width="400" height="100" >
+  <polygon  fill="white" stroke="green" stroke-width="4" points="60,10 200,10 220,60 30,60"/>
+  <text x="125" y="50" text-anchor="middle" fill="black" font-size="25">Trap: <?php echo ($_SESSION['g3']);?></text>
+</svg>
+
+
 
 
 <form action = "QRGameCheck.php" method = "GET" >
-	<p><font color=#003399>Problem Number: </font><input type="text" name="problem_id" size=3 value="<?php echo (htmlentities($p_num))?>"  ></p>
+<!--	<p><font color=#003399>Problem Number: </font><input type="text" name="problem_id" size=3 value="<?php echo (htmlentities($p_num))?>"  ></p> -->
 	
-	<p><input type = "submit" value="Go to Checker" size="14" style = "width: 30%; background-color: #003399; color: white"/> &nbsp &nbsp </p>
+	<p><b><input type = "submit" value="Go to Checker" size="30" style = "width: 50%; background-color: #003399; color: white"/> &nbsp &nbsp </b></p>
 	</form>
 
 </body>

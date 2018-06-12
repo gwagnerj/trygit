@@ -1,6 +1,8 @@
 <?php
 //require_once "pdo.php";
-
+if(isset($_SESSION['problem_id'])){
+	session_destroy();
+}
 session_unset();
 session_start();
 $_SESSION['index'] = rand(2,200);

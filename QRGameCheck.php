@@ -6,28 +6,14 @@
 	
 Require_once "pdo.php";
 
-
-if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
-	$_SESSION['problem_id'] = $_GET['problem_id'];
-
-	$_SESSION['index'] = $_GET['dex_num'];
-	
 	
 		if (!isset($_POST['dex_num'])){
 			for ($j=0;$j<=9;$j++){
 				$wrongCount[$j]=0;
 				$_SESSION['wrongC'[$j]]=$wrongCount[$j]; 
 			}
-		}		
+		} 
 		//$_SESSION['wrongC']=$wrongCount; 
-	
-	
-	
-	
-	
-	
-	
-}
 	
 	// initialize some variables
 	
@@ -46,7 +32,7 @@ if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
 	$_SESSION['wrongC']=$wrongCount; 
 	
 	$hintLimit = 3;
-	$dispBase = 1;
+	$dispBase = 0;
 	
 	
 	$count='';  // counts the times the check button is placed
@@ -65,8 +51,8 @@ $stmt->execute(array(":problem_id" => $_SESSION['problem_id'], ":dex" => $_SESSI
 //$row = $stmt->fetch(PDO::FETCH_ASSOC);
 $row = $stmt -> fetch();
 if ( $row === false ) {
-    $_SESSION['error'] = 'Bad value for problem_id';
-    header( 'Location: QRPindex.php' ) ;
+    $_SESSION['error'] = ('Bad value for problem_id' . $_SESSION["index"] .'and' .$_SESSION["problem_id"]);
+    header( 'Location: QRGameindex.php' ) ;
     return;
 }	
 		$soln = array_slice($row,6); // this would mean the database table Qa would have the dame structure
@@ -86,8 +72,8 @@ if ( $row === false ) {
 	//$row = $stmt->fetch(PDO::FETCH_ASSOC);
 	$row = $stmt -> fetch();
 	if ( $row === false ) {
-		$_SESSION['error'] = 'Bad value for problem_id';
-		header( 'Location: QRPindex.php' ) ;
+		$_SESSION['error'] = 'Bad value for problem_id in tol get';
+		header( 'Location: QRGameindex.php' ) ;
 		return;
 	}	
 	$probData=$row;	
@@ -324,7 +310,7 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 
 <body>
 <header>
-<h1>QRProblem Checker</h1>
+<h1>QRGame Checker</h1>
 </header>
 <main>
 
@@ -332,12 +318,12 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 <p> Problem Number: <?php echo ($_SESSION['problem_id']) ?> </p>
 
 
+
 <form autocomplete="off" method="POST" >
 <!-- <p>Problem Number: <input type="text" name="problem_number" ></p> -->
 <!-- <p> Please put in your index number </p> -->
-<p><font color=#003399>Index Number: </font><input type="text" name="dex_num" size=3 value="<?php echo (htmlentities($_SESSION['index']))?>"  ></p>
-<p> <strong> Fill in - then select "Check" </strong></p>
-
+<!--<p><font color=#003399>Index: </font><input type="text" name="dex_num" size=3 value="<?php echo (htmlentities($_SESSION['index']))?>"  ></p> -->
+<!--<p> <strong> Fill in - then select "Check" </strong></p> -->
 
 <?php
 if ($partsFlag[0]){ ?> 
@@ -389,23 +375,23 @@ if ($partsFlag[9]){ ?>
 <p><input type = "submit" value="Finished"/> </p>
 </form> -->
 
-<form action="rtnCode.php" method="POST">
+<form action="StopGame.php" method="POST">
  <hr>
-<p><b><font Color="red">When Finished:</font></b></p>
+<p><b><font Color="red">Finished:</font></b></p>
   <!--<input type="hidden" name="score" value=<?php echo ($score) ?> /> -->
-  <?php $_SESSION['score'] = $PScore; $_SESSION['index'] = $index; $_SESSION['count'] = $count; ?>
- <b><input type="submit" value="Get rtn Code" style = "width: 30%; background-color:yellow "></b>
+   <?php $_SESSION['score'] = $PScore;  $_SESSION['count'] = $count; ?>
+ <b><input type="submit" value="Finished" name="score" style = "width: 30%; background-color:yellow "></b>
  <p><br> </p>
  <hr>
 </form>
 
-<form method = "POST">
+<!--<form method = "POST">
 <p><input type = "submit" value="Get Base-Case Answers" name = "show_base" size="10" style = "width: 30%; background-color: green; color: white"/> &nbsp &nbsp <b> <font size="4" color="Green"></font></b></p>
-</form>
+</form> -->
 
 
 <?php
-
+/* 
 
 if(isset($_POST['show_base']) and $dispBase){
 	
@@ -437,7 +423,7 @@ if(isset($_POST['show_base']) and $dispBase){
 
 
 
-
+ */
 ?>
 
 
