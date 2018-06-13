@@ -129,6 +129,10 @@ if ( $row === false ) {
 	$tol['i']=$probData['tol_i']*0.01;	
 	$tol['j']=$probData['tol_j']*0.01;	
 	
+	$hinta = $probData['hint_a'];
+	$hintaPath="uploads/".$hinta;
+	
+	
 	$unit = array_slice($row,22,20);  // dows the same thing but easier so long as the table always has the same structure
 	//print_r($unit);
 
@@ -202,8 +206,6 @@ if(!($_SESSION['count'])){
 				}	
 				
 				if(	abs(($soln[$j]-$resp[$resp_key[$j]])/$sol)<= $tol[$tol_key[$j]]) {
-							
-							
 									
 									$corr[$corr_key[$j]]='Correct';
 									$score=$score+1;
@@ -213,9 +215,6 @@ if(!($_SESSION['count'])){
 							}
 				Else  // got it wrong or did not attempt
 				{
-					
-							
-						
 						
 							if(!(isset($_SESSION['wrongC'[$j]])))  // needs initialized
 							{
@@ -365,8 +364,10 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 
 
 <?php
+
+
 if ($partsFlag[0]){ ?> 
-<p> a): <input [ type=number]{width: 5%;} name="a" size = 10% value="<?php echo (htmlentities($resp['a']))?>" > <?php echo($unit[0]) ?> &nbsp - <b><?php echo ($corr['a']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[0]>$hintLimit and $corr['a']=="Not Correct"){echo '<a href="hints/parta/parta.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> a): <input [ type=number]{width: 5%;} name="a" size = 10% value="<?php echo (htmlentities($resp['a']))?>" > <?php echo($unit[0]) ?> &nbsp - <b><?php echo ($corr['a']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[0]>$hintLimit and $corr['a']=="Not Correct"){echo '<a href="'.$hintaPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[1]){ ?> 
 <p> b): <input [ type=number]{width: 5%;} name="b" size = 10% value="<?php echo (htmlentities($resp['b']))?>" > <?php echo($unit[1]) ?> &nbsp - <b><?php echo ($corr['b']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[1]>$hintLimit and $corr['b']=="Not Correct"){echo '<a href="hints/partb/partb.html" target = "_blank"> hints for this part </a>';} ?>  </p>

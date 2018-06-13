@@ -452,7 +452,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <p>Problem statement file: <input type='file' accept='.docx' name='docxfile'/></p>
 <p>Base-case  file: <input type='file' accept='.pdf' name='pdffile'/></p>
 <p><hr></p>
-<p>hint_a file: <input type='file'  name='hintaFile'/></p>
+<p>hint_a file: <input type='file' accept='.html' name='hintaFile'/></p>
 
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
 <p><input type="submit" value="Update"/>
