@@ -96,7 +96,7 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 type= "application/pdf" width="100%" Height="50%"> -->
 <?php 
 if($preview !== "uploads/" and $preview !== "Null") {
-	echo ('<iframe src="'.$preview.'"'.'width="100%" Height = "50%">');
+	echo ('<iframe src="'.$preview.'"'.'width="100%" Height = "40%">');
 
 	echo ('</iframe>');
 }

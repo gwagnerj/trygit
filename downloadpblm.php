@@ -5,7 +5,7 @@ session_start();
 // Guardian: Make sure that problem_id is present
 if ( ! isset($_GET['problem_id']) ) {
   $_SESSION['error'] = "Missing problem_id";
-  header('Location: index.php');
+  header('Location: QRPRepo.php');
   return;
 }
   
@@ -42,7 +42,7 @@ if ( ! isset($_GET['problem_id']) ) {
 ?>
 
 <p> </p>
-<a href="index.php">Finished or Cancel</a>
+<a href="QRPRepo.php">Finished or Cancel</a>
 
 <!--
 
@@ -51,7 +51,7 @@ $stmt->execute(array(":xyz" => $_GET['users2_id']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if ( $row === false ) {
     $_SESSION['error'] = 'Bad value for users2_id';
-    header( 'Location: index.php' ) ;
+    header( 'Location: QRPRepo.php' ) ;
     return;
 } 
 
@@ -61,6 +61,6 @@ if ( $row === false ) {
 <form method="post">
 <input type="hidden" name="users2_id" value="<?= $row['users2_id'] ?>">
 <input type="submit" value="Download" name="download">
-<a href="index.php">Finished or Cancel</a>
+<a href="QRPRepo.php">Finished or Cancel</a>
 </form>
 -->

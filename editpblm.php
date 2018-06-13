@@ -32,12 +32,12 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
 			else{$_SESSION['error']='Docx file not loaded';
-				header( 'Location: index.php' ) ;
+				header( 'Location: QRPRepo.php' ) ;
 				return;	
 			}
 		}
 		else {$_SESSION['error']='Docxfile not loaded';
-			header( 'Location: index.php' ) ;
+			header( 'Location: QRPRepo.php' ) ;
 			return;	
 		} 
 	//Get the filename from the pdffile (base-case) that was uploaded
@@ -58,12 +58,12 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
 			else{$_SESSION['error']='pdf (base-case) file not loaded';
-				header( 'Location: index.php' ) ;
+				header( 'Location: QRPRepo.php' ) ;
 				return;	
 			}
 		}
 		else {$_SESSION['error']='pdffile (Basecase) not loaded';
-			header( 'Location: index.php' ) ;
+			header( 'Location: QRPRepo.php' ) ;
 			return;	
 		}
 		
@@ -81,12 +81,12 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
 			else{$_SESSION['error']='input data file not loaded';
-				header( 'Location: index.php' ) ;
+				header( 'Location: QRPRepo.php' ) ;
 				return;	
 			}
 		}
 		else {$_SESSION['error']='input file not loaded';
-			header( 'Location: index.php' ) ;
+			header( 'Location: QRPRepo.php' ) ;
 			return;	
 		} 	
 		
@@ -310,14 +310,14 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 	
 	// If all fields have values we should set the status to new file
 	
-    header( 'Location: index.php' ) ;
+    header( 'Location: QRPRepo.php' ) ;
     return;
 }
 
 // Guardian: Make sure that problem_id is present
 if ( ! isset($_GET['problem_id']) ) {
   $_SESSION['error'] = "Missing problem_id";
-  header('Location: index.php');
+  header('Location: QRPRepo.php');
   return;
 }
 
@@ -327,7 +327,7 @@ $stmt->execute(array(":xyz" => $_GET['problem_id']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if ( $row === false ) {
     $_SESSION['error'] = 'Bad value for problem_id';
-    header( 'Location: index.php' ) ;
+    header( 'Location: QRPRepo.php' ) ;
     return;
 }
 
@@ -386,5 +386,5 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
 <p><input type="submit" value="Update"/>
-<a href="index.php">Cancel</a></p>
+<a href="QRPRepo.php">Cancel</a></p>
 </form>

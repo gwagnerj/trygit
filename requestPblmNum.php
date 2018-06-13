@@ -73,7 +73,7 @@ if(isset($_POST['title'])){
 	}
 	else {
 			$_SESSION['error'] = 'All inputs are required';
-			header("Location: index.php");
+			header("Location: QRPRepo.php");
 			return;
 	}
 
@@ -125,5 +125,5 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 	</label> 
 <p></p>
 <p><input type="submit" value="Get Problem Number"/>
-<a href="index.php">Cancel</a></p>
+<a href="QRPRepo.php">Cancel</a></p>
 </form>

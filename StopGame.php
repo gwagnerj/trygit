@@ -27,6 +27,7 @@ $seconds = $elapTime % 60;
 <p><b><font size=7><p>Your Score:<font color = "blue"> <?php echo (round( $_SESSION['score']))?>%</font></font></b></p> 
 <p><b><font size=7><p>Your Points:<font color = "blue"> <?php echo (round( $_SESSION['points']))?></font></font></b></p> 
 <p><b><font size=7><p>Your Time:<font color = "blue"> <?php echo "$minutes:$seconds"?></font></font></b></p> 
+<p><b><font size=7><p>Number of Tries:<font color = "blue"> <?php echo ($_SESSION['count'])?></font></font></b></p> 
 <p><br></p>
 
 <a href="QRGameindex.php"><b><font size = 6> New Problem </font></b></a>
