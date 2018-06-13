@@ -30,7 +30,7 @@ $seconds = $elapTime % 60;
 <p><b><font size=7><p>Number of Tries:<font color = "blue"> <?php echo ($_SESSION['count'])?></font></font></b></p> 
 <p><br></p>
 
-<a href="QRGameindex.php"><b><font size = 6> New Problem </font></b></a>
+<a href="index.php"><b><font size = 6> New Problem </font></b></a>
 
 </main>
 

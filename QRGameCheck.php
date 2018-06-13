@@ -52,7 +52,7 @@ $stmt->execute(array(":problem_id" => $_SESSION['problem_id'], ":dex" => $_SESSI
 $row = $stmt -> fetch();
 if ( $row === false ) {
     $_SESSION['error'] = ('Bad value for problem_id' . $_SESSION["index"] .'and' .$_SESSION["problem_id"]);
-    header( 'Location: QRGameindex.php' ) ;
+    header( 'Location: index.php' ) ;
     return;
 }	
 		$soln = array_slice($row,6); // this would mean the database table Qa would have the dame structure
@@ -73,7 +73,7 @@ if ( $row === false ) {
 	$row = $stmt -> fetch();
 	if ( $row === false ) {
 		$_SESSION['error'] = 'Bad value for problem_id in tol get';
-		header( 'Location: QRGameindex.php' ) ;
+		header( 'Location: index.php' ) ;
 		return;
 	}	
 	$probData=$row;	

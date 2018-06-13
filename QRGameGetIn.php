@@ -5,12 +5,12 @@ session_start();
 // first do some error checking on the input.  If it is not OK set the session failure and send them back to QRGameIndex.
 if ( ! isset($_GET['problem_id']) ) {
   $_SESSION['error'] = "Missing problem number";
-  header('Location: QRGameindex.php');
+  header('Location: index.php');
   return;
 }
 if ($_GET['problem_id']<1 or $_GET['problem_id']>1000000)  {
   $_SESSION['error'] = "problem number out of range";
-  header('Location: QRGameindex.php');
+  header('Location: index.php');
   return;
 }
 
@@ -24,7 +24,7 @@ $_SESSION['startTime'] = time();
 	$row = $stmt -> fetch();
 	if ( $row === false ) {
 		$_SESSION['error'] = 'Bad value for problem_id';
-		header( 'Location: QRGameindex.php' ) ;
+		header( 'Location: index.php' ) ;
 		return;
 	}
 	$probData=$row;	
@@ -33,7 +33,7 @@ $_SESSION['startTime'] = time();
 	$gameOnFlag=$probData['game_prob_flag'];	
 	if($gameOnFlag==0){
 			$_SESSION['error']="Not a game problem";
-			header('Location: QRGameindex.php');
+			header('Location: index.php');
 			return;
 	}
 //echo $_SESSION['problem_id'];
@@ -48,7 +48,7 @@ $_SESSION['startTime'] = time();
 	//$row = $stmt -> fetch();
 		if ( $row === false ) {
 			$_SESSION['error'] = 'could not read row of table Qa for game variables';
-			header('Location: QRGameindex.php');
+			header('Location: index.php');
 			return;
 		}	
 	$_SESSION['g1']=$row['g1'];
@@ -57,7 +57,7 @@ $_SESSION['startTime'] = time();
 
 	if ($_SESSION['g1']=="" or $_SESSION['g1']=="NULL"){
 			$_SESSION['error']="Game variable 1 is empty for this problem";
-			header('Location: QRGameindex.php');
+			header('Location: index.php');
 			return;
 	}
 ?>
