@@ -2,8 +2,20 @@
 require_once "pdo.php";
 session_start();
 ?>
-<html>
-<head></head><body>
+ <!DOCTYPE html>
+<html lang = "en">
+<head>
+<link rel="icon" type="image/png" href="McKetta.png" />  
+<meta Charset = "utf-8">
+<title>QRProblems</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
+</head>
+
+<body>
+<header>
+<h2>Quick Response Problems</h2>
+</header>
+
 <?php
 if ( isset($_SESSION['error']) ) {
     echo '<p style="color:red">'.$_SESSION['error']."</p>\n";

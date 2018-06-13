@@ -1,3 +1,7 @@
+
+
+
+
 <?php
 require_once "pdo.php";
 session_start();
@@ -31,15 +35,17 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$tmp_docxname =  $_FILES['docxfile']['tmp_name'];
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
-			else{$_SESSION['error']='Docx file not loaded';
+			/* else{$_SESSION['error']='Docx file not loaded im here';
 				header( 'Location: QRPRepo.php' ) ;
 				return;	
 			}
 		}
-		else {$_SESSION['error']='Docxfile not loaded';
+		else {$_SESSION['error']='Docxfile not loaded and im here';
 			header( 'Location: QRPRepo.php' ) ;
-			return;	
-		} 
+			return;	*/
+		}  
+		
+	
 	//Get the filename from the pdffile (base-case) that was uploaded
 		if($_FILES['pdffile']['name']) {
 			$filename=explode(".",$_FILES['pdffile']['name']); // divides the file into its name and extension puts it into an array
@@ -57,15 +63,15 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$tmp_pdfname =  $_FILES['pdffile']['tmp_name'];
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
-			else{$_SESSION['error']='pdf (base-case) file not loaded';
+			/* else{$_SESSION['error']='pdf (base-case) file not loaded';
 				header( 'Location: QRPRepo.php' ) ;
 				return;	
 			}
 		}
 		else {$_SESSION['error']='pdffile (Basecase) not loaded';
 			header( 'Location: QRPRepo.php' ) ;
-			return;	
-		}
+			return;	*/
+		} 
 		
 		// now get input data
 	if($_FILES['inputdata']['name']) {
@@ -80,15 +86,29 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$tmp_inputname =  $_FILES['inputdata']['tmp_name'];
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
-			else{$_SESSION['error']='input data file not loaded';
+			/* else{$_SESSION['error']='input data file not loaded';
 				header( 'Location: QRPRepo.php' ) ;
 				return;	
 			}
 		}
 		else {$_SESSION['error']='input file not loaded';
 			header( 'Location: QRPRepo.php' ) ;
-			return;	
-		} 	
+			return;	*/
+		} 	 
+// hint a file
+		if($_FILES['hintaFile']['name']) {
+			$filename=explode(".",$_FILES['hintaFile']['name']); // divides the file into its name and extension puts it into an array
+			
+				$hintaFile=addslashes($_FILES['hintaFile']['tmp_name']);
+				$hintaname=addslashes($_FILES['hintaFile']['name']);
+				$hintaFile=file_get_contents($hintaFile);
+				
+//this code needs work			
+				$hintaname = $_FILES['hintaFile']['name'];
+				$tmp_hintaname =  $_FILES['hintaFile']['tmp_name'];
+				$location = "uploads/"; // This is the local file directory name where the files get saved
+			}
+
 		
 // get the new school_id if it has been updated
 		
@@ -104,7 +124,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 		//Print_r ($_POST['problem_id']);
 		//die ();
 	// insert into problems with temporary file names for the docx, input data and pdf file
-	$sql = "UPDATE Problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, pdffilenm=:pdffilenm, school_id = :school_id	
+	$sql = "UPDATE Problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, pdffilenm=:pdffilenm, hint_a = :hinta, school_id = :school_id	
 	WHERE problem_id=:problem_id";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
@@ -114,6 +134,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				':docxfilenm'=> $docxname,
 				':infilenm'=> $inputname,
 				':pdffilenm'=> $pdfname,
+				':hinta'=> $hintaname,
 				':school_id'=> $school_id,
 				':problem_id' => $_POST['problem_id']));
 				
@@ -281,7 +302,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 						}
 						fclose($handle);
 					}else {$_SESSION['error']=' Answer file is not a csv file';}
-				}else {$_SESSION['error']=' Ans file not loaded';}
+				}else {$_SESSION['error']=' Warning - Ans file not loaded';}
 				
 			// this should conserve the data already input and 
 	//die();
@@ -415,6 +436,8 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 <p>Problem statement file: <input type='file' accept='.docx' name='docxfile'/></p>
 <p>Base-case  file: <input type='file' accept='.pdf' name='pdffile'/></p>
+<p><hr></p>
+<p>hint_a file: <input type='file'  name='hintaFile'/></p>
 
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
 <p><input type="submit" value="Update"/>

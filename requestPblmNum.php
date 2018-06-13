@@ -35,7 +35,8 @@ if(isset($_POST['title'])){
 						$row = $stmt->fetch(PDO::FETCH_ASSOC);
 						$school_id=$row['school_id'];
 	  
-	  $sql = "INSERT INTO problem (name, email, title,nm_author, game_prob_flag,school_id,status)	VALUES (:name, :email, :title,:nm_author, :game_prob_flag,:school_id,:status)";
+	  $sql = "INSERT INTO problem (name, email, title,nm_author, game_prob_flag, school_id, subject, course, primary_concept, secondary_concept, status)	
+	  VALUES (:name, :email, :title,:nm_author, :game_prob_flag,:school_id,:subject, :course, :primary_concept, :secondary_concept,:status)";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
 				':name' => $_POST['name'],
@@ -44,6 +45,10 @@ if(isset($_POST['title'])){
 				':nm_author' => $nm_author,				
 				':game_prob_flag' => $game_prob_flag,
 				':school_id' => $school_id,
+				':subject' => $_POST['subject'],
+				':course' => $_POST['course'],
+				':primary_concept' => $_POST['p_concept'],
+				':secondary_concept' => $_POST['s_concept'],
 				':status' => 'num issued'));
 				
 			$pblm_num=$pdo->lastInsertId();
@@ -126,6 +131,19 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <p> The Author of the Base-Case (if different than Contributor):
 <input type="text" name="nm_author" ></p>
 <p>
+
+<p>Subject:
+<input type="text" name="subject" ></p>
+
+<p>Course:
+<input type="text" name="course" ></p>
+
+<p>Primary Concept:
+<input type="text" name="p_concept" ></p>
+
+<p>Secondary Concept:
+<input type="text" name="s_concept" ></p>
+
 <input type="checkbox" name="game" Value = "checked"> This is a Game Problem</p>
 <label> School:
 		<select required name = "s_name">
