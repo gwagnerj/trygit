@@ -161,7 +161,12 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			else {
 				$newPdfNm = "P".$problem_id."_p_".$pdfname;
 			}
-			
+				if (fnmatch("P*_ha_*",$hintaname,FNM_CASEFOLD ) ){ // ignore the case when matching
+				$newhintaNm = $hintaname;
+			}
+			else {
+				$newhintaNm = "P".$problem_id."_ha_".$hintaname;
+			}
 	
 	// these will need if statements to see if this has been loaded
 	
@@ -182,6 +187,12 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			$stmt->execute(array(
 				':newPdfNm' => $newPdfNm,
 				':pblm_num' => $_POST['problem_id']));
+				
+			$sql = "UPDATE problem SET hint_a = :newhintaNm WHERE problem_id = :pblm_num";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(
+				':newhintaNm' => $newhintaNm,
+				':pblm_num' => $_POST['problem_id']));
 	
 			$_SESSION['success'] = 'Record updated';
 						
@@ -200,6 +211,10 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			if (move_uploaded_file($_FILES['pdffile']['tmp_name'], $pathName)){
 				
 				$_SESSION['success'] = $_SESSION['success'].'PdfFile upload successful';
+			}
+			$pathName = 'uploads/'.$newhintaNm;
+			if (move_uploaded_file($_FILES['hintaFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'HintaFile upload successful';
 			}
 	
 		/*   	$row = 1;
