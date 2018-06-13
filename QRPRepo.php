@@ -52,8 +52,8 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     //Print_r($row);
 	//die();
 	//if they request the file then set the $preview variable to the name of the file
-	if (isset($_POST['preview']) and $_POST['preview']= htmlentities($row['problem_id'])){
-		$preview='uploads/'.htmlentities($row['pdffilenm']);
+	if (isset($_POST['preview']) ){
+		$preview='uploads/'.htmlentities($_POST['preview']);
 	}
 
 	
@@ -77,12 +77,12 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     echo('<a href="deletepblm.php?problem_id='.$row['problem_id'].'">Del</a> / ');
 	echo('<a href="downloadpblm.php?problem_id='.$row['problem_id'].'">Download</a>');
 	  echo("</td><td>");
-	echo('<form action = "index.php" method = "post"> <input type = "hidden" name = "preview" value ="'.$row['problem_id'].'"><input type = "submit" value ="PreView"></form>');
- 
+	echo('<form action = "QRPRepo.php" method = "POST" > <input type = "hidden" name = "preview" value ="'.$row['pdffilenm'].'"><input type = "submit" value ="PreView"></form>');
+	Print_r($row['pdffilenm']);
    echo("</td></tr>\n");
 	
 }
-//echo ('"'.$preview.'"');
+echo ('"'.$preview.'"');
 ?>
 </table>
 <p></p>
