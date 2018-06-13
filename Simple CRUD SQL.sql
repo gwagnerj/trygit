@@ -72,6 +72,23 @@ INSERT INTO School (s_name) VALUES('Trine University');
    tol_h int,
    tol_i int,
    tol_j int,
+   hint_a VARCHAR(64),
+   hint_b VARCHAR(64),
+   hint_c VARCHAR(64),
+   hint_d VARCHAR(64),
+   hint_e VARCHAR(64),
+   hint_f VARCHAR(64),
+   hint_g VARCHAR(64),
+   hint_h VARCHAR(64),
+   hint_i VARCHAR(64),
+   hint_j VARCHAR(64),
+   hint_pblm VARCHAR(64),
+   soln_pblm VARCHAR(128),
+   subject VARCHAR(128),
+   course VARCHAR(128),
+   primary_concept VARCHAR(128),
+   secondary_concept VARCHAR(128),
+
    INDEX using BTREE(name),
    CONSTRAINT FOREIGN KEY (school_id) REFERENCES School (school_id) 
 		ON DELETE CASCADE ON UPDATE CASCADE

@@ -78,11 +78,11 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 	echo('<a href="downloadpblm.php?problem_id='.$row['problem_id'].'">Download</a>');
 	  echo("</td><td>");
 	echo('<form action = "QRPRepo.php" method = "POST" > <input type = "hidden" name = "preview" value ="'.$row['pdffilenm'].'"><input type = "submit" value ="PreView"></form>');
-	Print_r($row['pdffilenm']);
+	//Print_r($row['pdffilenm']);
    echo("</td></tr>\n");
 	
 }
-echo ('"'.$preview.'"');
+//echo ('"'.$preview.'"');
 ?>
 </table>
 <p></p>

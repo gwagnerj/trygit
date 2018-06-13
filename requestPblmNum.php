@@ -8,7 +8,7 @@ if(isset($_POST['title'])){
 		// Data validation
 		if ( strlen($_POST['title']) < 5 ) {
 			$_SESSION['error'] = 'Please include a longer title';
-			header("Location: index.php");
+			header("Location: QRPRepo.php");
 			return;
 		}
 		if(isset($_POST['game'])){
@@ -97,11 +97,23 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 }
 
 ?>
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<link rel="icon" type="image/png" href="McKetta.png" />  
+<meta Charset = "utf-8">
+<title>QRProblems</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
+</head>
 
+<body>
+<header>
+<h2>Quick Response Problems</h2>
+</header>
 
 
 <p>Please provide your:</p>
-<form method="post">
+<form  method="POST" >
 <p></p>
 <p>Contributor Name:
 <input type="text" name="name" ></p>
@@ -124,6 +136,9 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 		</select>
 	</label> 
 <p></p>
-<p><input type="submit" value="Get Problem Number"/>
+<p><input  type="submit" value="Get Problem Number"/>
+
 <a href="QRPRepo.php">Cancel</a></p>
 </form>
+</body>
+</html>

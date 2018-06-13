@@ -291,10 +291,16 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 	));
 	$row = $stmt->fetch(PDO::FETCH_ASSOC);
 	$status = $row['problem.status'];
-	IF (($row['problem.docxfilenm']!=="NULL") AND ($row['problem.infilenm']!=="NULL") AND ($row['qa.dex']!=="NULL")){
-		$status = "New Compl";
-	}
 	
+	
+	If($row['problem.game_prob_flag']==0){
+		IF (($row['problem.docxfilenm']!=="NULL") AND ($row['problem.infilenm']!=="NULL") AND ($row['qa.dex']!=="NULL")){
+			$status = "New Compl";
+		}
+	} Elseif(($row['problem.docxfilenm']!=="NULL") AND ($row['qa.dex']!=="NULL")){
+		$status = "New Compl";
+		
+	}
     $sql = "UPDATE problem SET name = :name,
             email = :email, title = :title,school_id=:school_id,status = :status
             WHERE problem_id = :problem_id";
@@ -340,6 +346,11 @@ if ( isset($_SESSION['error']) ) {
 $n = htmlentities($row['name']);
 $e = htmlentities($row['email']);
 $p = htmlentities($row['title']);
+$gf = htmlentities($row['game_prob_flag']);
+//print_r($gf);
+$in = htmlentities($row['infilenm']);
+
+$df = htmlentities($row['docxfilenm']);
 $problem_id = $row['problem_id'];
 $school_id= $row['school_id'];
 
@@ -360,6 +371,21 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 
 ?>
+<!DOCTYPE html>
+<html lang = "en">
+<head>
+<link rel="icon" type="image/png" href="McKetta.png" />  
+<meta Charset = "utf-8">
+<title>QRProblems</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" /> 
+</head>
+
+<body>
+<header>
+<h2>Quick Response Problems</h2>
+</header>
+
+
 <p>Edit Problem Meta Data</p>
 <form action="" method="post" enctype="multipart/form-data">
 <p>Name:
@@ -380,7 +406,13 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 </p>
 <p>Answers File: <input type='file' accept='.csv' name='Qa'/></p>
-<p><font color="black">Input File: </font><input type='file' accept='.csv' name='inputdata'/></p>
+
+<?php if(!$gf){ // only have this input if it is not a game problem
+	?>  
+<p><font color="black">Input File: </font><input type='file' accept='.csv'  name='inputdata'/></p>
+<?php } 
+?>
+
 <p>Problem statement file: <input type='file' accept='.docx' name='docxfile'/></p>
 <p>Base-case  file: <input type='file' accept='.pdf' name='pdffile'/></p>
 
@@ -388,3 +420,5 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <p><input type="submit" value="Update"/>
 <a href="QRPRepo.php">Cancel</a></p>
 </form>
+</body>
+</html>
