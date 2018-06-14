@@ -1,7 +1,4 @@
 
-
-
-
 <?php
 require_once "pdo.php";
 session_start();
@@ -22,55 +19,132 @@ if ( isset($_POST['name']) or isset($_POST['email'])
         header("Location: editpblm.php?problem_id=".$_POST['problem_id']);
         return;
     }
-//Get the filename from the docxfile that was uploaded
+	$problem_id=$_POST['problem_id'];
+
+	
+	//Get the filename from the docxfile that was uploaded
+	
 		if($_FILES['docxfile']['name']) {
 			$filename=explode(".",$_FILES['docxfile']['name']); // divides the file into its name and extension puts it into an array
-			if ($filename[1]=='docx'){ // this is the extension
-				$docxfile=addslashes($_FILES['docxfile']['tmp_name']);
-				$docxname=addslashes($_FILES['docxfile']['name']);
-				$docxfile=file_get_contents($docxfile);
+				if ($filename[1]=='docx'){ // this is the extension
+					$docxfile=addslashes($_FILES['docxfile']['tmp_name']);
+					$docxname=addslashes($_FILES['docxfile']['name']);
+					$docxfile=file_get_contents($docxfile);
+					
+	//this code needs work			
+					$docxname = $_FILES['docxfile']['name'];
+					$tmp_docxname =  $_FILES['docxfile']['tmp_name'];
+					$location = "uploads/"; // This is the local file directory name where the files get saved
+				}
 				
-//this code needs work			
-				$docxname = $_FILES['docxfile']['name'];
-				$tmp_docxname =  $_FILES['docxfile']['tmp_name'];
-				$location = "uploads/"; // This is the local file directory name where the files get saved
-			}
-			/* else{$_SESSION['error']='Docx file not loaded im here';
-				header( 'Location: QRPRepo.php' ) ;
-				return;	
-			}
-		}
-		else {$_SESSION['error']='Docxfile not loaded and im here';
-			header( 'Location: QRPRepo.php' ) ;
-			return;	*/
+				
+				// insert into problems with temporary file names for the docx, input data and pdf file
+				$sql = "UPDATE Problem SET  docxfilenm = :docxfilenm 	
+				WHERE problem_id=:problem_id";
+						$stmt = $pdo->prepare($sql);
+						$stmt->execute(array(':docxfilenm'=> $docxname,	':problem_id' => $_POST['problem_id']));
+				
+				
+				if (fnmatch("P*_d_*",$docxname,FNM_CASEFOLD ) ){ // ignore the case when matching
+						$newDocxNm = $docxname;
+				}
+				else if($docxname!==""){
+						$newDocxNm = "P".$problem_id."_d_".$docxname;
+				} else {
+					$newDocxNm = "P".$problem_id."_d_problemStatement.docx";
+				}
+				
+				$sql = "UPDATE problem SET docxfilenm = :newDocxNm WHERE problem_id = :pblm_num";
+				$stmt = $pdo->prepare($sql);
+				$stmt->execute(array(
+					':newDocxNm' => $newDocxNm,
+					':pblm_num' => $_POST['problem_id']));
+				
+			// now upload docx, input and pdf files
+				$pathName = 'uploads/'.$newDocxNm;
+				if (move_uploaded_file($_FILES['docxfile']['tmp_name'], $pathName)){
+					$_SESSION['success'] = $_SESSION['success'].'DocxFile upload successful';
+				}
 		}  
-		
-	
-	//Get the filename from the pdffile (base-case) that was uploaded
+
+
+//Get the filename from the pdffile (base-case) that was uploaded
 		if($_FILES['pdffile']['name']) {
 			$filename=explode(".",$_FILES['pdffile']['name']); // divides the file into its name and extension puts it into an array
 			if ($filename[1]=='pdf'){ // this is the extension
-		/* print_r ($filename[1]);
-		die; */
-
-		
 				$pdffile=addslashes($_FILES['pdffile']['tmp_name']);
 				$pdfname=addslashes($_FILES['pdffile']['name']);
 				$pdffile=file_get_contents($pdffile);
-				
-//this code needs work			
 				$pdfname = $_FILES['pdffile']['name'];
 				$tmp_pdfname =  $_FILES['pdffile']['tmp_name'];
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
-			/* else{$_SESSION['error']='pdf (base-case) file not loaded';
-				header( 'Location: QRPRepo.php' ) ;
-				return;	
+
+			$sql = "UPDATE Problem SET  pdffilenm = :pdffilenm 	
+					WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':pdffilenm'=> $pdfname,	':problem_id' => $_POST['problem_id']));
+
+			if (fnmatch("P*_p_*",$pdfname,FNM_CASEFOLD ) ){
+					$newPdfNm = $pdfname;
 			}
-		}
-		else {$_SESSION['error']='pdffile (Basecase) not loaded';
-			header( 'Location: QRPRepo.php' ) ;
-			return;	*/
+			elseif($pdfname !=="" ) {
+					$newPdfNm = "P".$problem_id."_p_".$pdfname;
+			} else {
+					$newPdfNm = "P".$problem_id."_p_basecase.pdf";
+			}
+		
+			$sql = "UPDATE problem SET pdffilenm = :newPdfNm WHERE problem_id = :pblm_num";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(
+				':newPdfNm' => $newPdfNm,
+				':pblm_num' => $_POST['problem_id']));
+		
+		//upload file
+			$pathName = 'uploads/'.$newPdfNm;
+			if (move_uploaded_file($_FILES['pdffile']['tmp_name'], $pathName)){
+				
+				$_SESSION['success'] = $_SESSION['success'].'PdfFile upload successful';
+			}
+		} 
+		
+		//Get the filename from the solnfile if it was uploaded
+		if($_FILES['solnfile']['name']) {
+			$filename=explode(".",$_FILES['solnfile']['name']); // divides the file into its name and extension puts it into an array
+			if ($filename[1]=='pdf'){ // this is the extension
+				$solnfile=addslashes($_FILES['solnfile']['tmp_name']);
+				$solnname=addslashes($_FILES['solnfile']['name']);
+				$solnfile=file_get_contents($solnfile);
+				$solnname = $_FILES['solnfile']['name'];
+				$tmp_solnname =  $_FILES['solnfile']['tmp_name'];
+				$location = "uploads/"; // This is the local file directory name where the files get saved
+			}
+		
+			$sql = "UPDATE Problem SET  soln_pblm = :solnfilenm 	
+					WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':solnfilenm'=> $solnname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_s_*",$solnname,FNM_CASEFOLD ) ){
+				$newSolnNm = $solnname;
+			}
+			else if ($solnname !=="" ){
+				$newSolnNm = "P".$problem_id."_s_".$solnname;
+			} else {
+				$newSolnNm = "P".$problem_id."_s_solnfile.pdf";
+			}
+	
+			$sql = "UPDATE problem SET soln_pblm = :newSolnNm WHERE problem_id = :pblm_num";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(
+				':newSolnNm' => $newSolnNm,
+				':pblm_num' => $_POST['problem_id']));
+	
+			$pathName = 'uploads/'.$newSolnNm;
+			if (move_uploaded_file($_FILES['solnfile']['tmp_name'], $pathName)){
+				
+				$_SESSION['success'] = $_SESSION['success'].'solnFile upload successful';
+			}
 		} 
 		
 		// now get input data
@@ -80,34 +154,66 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$inputdata=addslashes($_FILES['inputdata']['tmp_name']);
 				$inputname=addslashes($_FILES['inputdata']['name']);
 				$inputdata=file_get_contents($inputdata);
-				
-//this code needs work			
 				$inputname = $_FILES['inputdata']['name'];
 				$tmp_inputname =  $_FILES['inputdata']['tmp_name'];
 				$location = "uploads/"; // This is the local file directory name where the files get saved
 			}
-			/* else{$_SESSION['error']='input data file not loaded';
-				header( 'Location: QRPRepo.php' ) ;
-				return;	
+		
+			$sql = "UPDATE Problem SET  infilenm = :infilenm 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':infilenm'=> $inputname,	':problem_id' => $_POST['problem_id']));
+
+			if (fnmatch("P*_i_*",$inputname,FNM_CASEFOLD ) ){
+				$newInputNm = $inputname;
+			}
+			else if($inputname !==""){
+				$newInputNm = "P".$problem_id."_i_".$inputname;
+			} else {
+				$newInputNm = "P".$problem_id."_i_inputfile.csv";
+			}
+	
+			$sql = "UPDATE problem SET infilenm = :newInputNm WHERE problem_id = :pblm_num";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(
+				':newInputNm' => $newInputNm,
+				':pblm_num' => $_POST['problem_id']));	
+			
+			$pathName = 'uploads/'.$newInputNm;
+			if (move_uploaded_file($_FILES['inputdata']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'Input data file upload successful';
+			}
+	} 	 
+// hint a file
+		if($_FILES['hint_aFile']['name']) {
+			$filename=explode(".",$_FILES['hint_aFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_aFile=addslashes($_FILES['hint_aFile']['tmp_name']);
+			$hint_aname=addslashes($_FILES['hint_aFile']['name']);
+			$hint_aFile=file_get_contents($hint_aFile);
+			$hint_aname = $_FILES['hint_aFile']['name'];
+			$tmp_hint_aname =  $_FILES['hint_aFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_a = :hint_a 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_a'=> $hint_aname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_ha_*",$hint_aname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_aNm = $hint_aname;
+			}
+			else if($hint_aname !== ""){
+				$newhint_aNm = "P".$problem_id."_ha_".$hint_aname;
+			} else {
+				$newhint_aNm = "P".$problem_id."_ha_hint_a.html";
+			}
+			
+			$pathName = 'uploads/'.$newhint_aNm;
+			if (move_uploaded_file($_FILES['hint_aFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'Hint_aFile upload successful';
 			}
 		}
-		else {$_SESSION['error']='input file not loaded';
-			header( 'Location: QRPRepo.php' ) ;
-			return;	*/
-		} 	 
-// hint a file
-		if($_FILES['hintaFile']['name']) {
-			$filename=explode(".",$_FILES['hintaFile']['name']); // divides the file into its name and extension puts it into an array
-			
-				$hintaFile=addslashes($_FILES['hintaFile']['tmp_name']);
-				$hintaname=addslashes($_FILES['hintaFile']['name']);
-				$hintaFile=file_get_contents($hintaFile);
-				
-//this code needs work			
-				$hintaname = $_FILES['hintaFile']['name'];
-				$tmp_hintaname =  $_FILES['hintaFile']['tmp_name'];
-				$location = "uploads/"; // This is the local file directory name where the files get saved
-			}
 
 		
 // get the new school_id if it has been updated
@@ -119,123 +225,15 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			$school_id=$row['school_id'];
 	
 		
-	//Print_r ($docxname);
-		//Print_r ($school_id);
-		//Print_r ($_POST['problem_id']);
-		//die ();
-	// insert into problems with temporary file names for the docx, input data and pdf file
-	$sql = "UPDATE Problem SET name = :name, email= :email, title = :title, docxfilenm = :docxfilenm, infilenm = :infilenm, pdffilenm=:pdffilenm, hint_a = :hinta, school_id = :school_id	
-	WHERE problem_id=:problem_id";
-			$stmt = $pdo->prepare($sql);
-			$stmt->execute(array(
-				':name' => $_POST['name'],
-				':email' => $_POST['email'],
-				':title' => $_POST['title'],
-				':docxfilenm'=> $docxname,
-				':infilenm'=> $inputname,
-				':pdffilenm'=> $pdfname,
-				':hinta'=> $hintaname,
-				':school_id'=> $school_id,
-				':problem_id' => $_POST['problem_id']));
-				
-					
-			// now replace the file name with the actual file name with the location build in
-			// first get the new name complete with pathname.  this will be if the form P##_
-			
-			$problem_id=$_POST['problem_id'];
-			if (fnmatch("P*_d_*",$docxname,FNM_CASEFOLD ) ){ // ignore the case when matching
-				$newDocxNm = $docxname;
-			}
-			else {
-				$newDocxNm = "P".$problem_id."_d_".$docxname;
-			}
-			if (fnmatch("P*_i_*",$inputname,FNM_CASEFOLD ) ){
-				$newInputNm = $inputname;
-			}
-			else {
-				$newInputNm = "P".$problem_id."_i_".$inputname;
-			}
-			if (fnmatch("P*_p_*",$pdfname,FNM_CASEFOLD ) ){
-				$newPdfNm = $pdfname;
-			}
-			else {
-				$newPdfNm = "P".$problem_id."_p_".$pdfname;
-			}
-				if (fnmatch("P*_ha_*",$hintaname,FNM_CASEFOLD ) ){ // ignore the case when matching
-				$newhintaNm = $hintaname;
-			}
-			else {
-				$newhintaNm = "P".$problem_id."_ha_".$hintaname;
-			}
 	
-	// these will need if statements to see if this has been loaded
-	
-			$sql = "UPDATE problem SET docxfilenm = :newDocxNm WHERE problem_id = :pblm_num";
+			$sql = "UPDATE problem SET hint_a = :newhint_aNm WHERE problem_id = :pblm_num";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
-				':newDocxNm' => $newDocxNm,
-				':pblm_num' => $_POST['problem_id']));
-				
-			$sql = "UPDATE problem SET infilenm = :newInputNm WHERE problem_id = :pblm_num";
-			$stmt = $pdo->prepare($sql);
-			$stmt->execute(array(
-				':newInputNm' => $newInputNm,
-				':pblm_num' => $_POST['problem_id']));	
-				
-			$sql = "UPDATE problem SET pdffilenm = :newPdfNm WHERE problem_id = :pblm_num";
-			$stmt = $pdo->prepare($sql);
-			$stmt->execute(array(
-				':newPdfNm' => $newPdfNm,
-				':pblm_num' => $_POST['problem_id']));
-				
-			$sql = "UPDATE problem SET hint_a = :newhintaNm WHERE problem_id = :pblm_num";
-			$stmt = $pdo->prepare($sql);
-			$stmt->execute(array(
-				':newhintaNm' => $newhintaNm,
+				':newhint_aNm' => $newhint_aNm,
 				':pblm_num' => $_POST['problem_id']));
 	
 			$_SESSION['success'] = 'Record updated';
-						
-			// now upload docx, input and pdf files
-			$pathName = 'uploads/'.$newDocxNm;
-			if (move_uploaded_file($_FILES['docxfile']['tmp_name'], $pathName)){
-				$_SESSION['success'] = $_SESSION['success'].'DocxFile upload successful';
-			}
-			
-			$pathName = 'uploads/'.$newInputNm;
-			if (move_uploaded_file($_FILES['inputdata']['tmp_name'], $pathName)){
-				$_SESSION['success'] = $_SESSION['success'].'Input data file upload successful';
-			}
-			
-			$pathName = 'uploads/'.$newPdfNm;
-			if (move_uploaded_file($_FILES['pdffile']['tmp_name'], $pathName)){
-				
-				$_SESSION['success'] = $_SESSION['success'].'PdfFile upload successful';
-			}
-			$pathName = 'uploads/'.$newhintaNm;
-			if (move_uploaded_file($_FILES['hintaFile']['tmp_name'], $pathName)){
-				$_SESSION['success'] = $_SESSION['success'].'HintaFile upload successful';
-			}
 	
-		/*   	$row = 1;
-		if($_FILES['Qa']['name']){
-					$filename=explode(".",$_FILES['Qa']['name']);
-					if($filename[1]=='csv') {  // this is the file extension where the 0 entry is the file name
-		
-		
-						if (($handle = fopen($_FILES['Qa']['tmp_name'], "r")) !== FALSE) {
-							while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
-								$num = count($data);
-								echo "<p> $num fields in line $row: <br /></p>\n";
-								$row++;
-								for ($c=0; $c < $num; $c++) {
-									echo $data[$c] . "<br />\n";
-								}
-							}
-							fclose($handle);
-						} 
-					}
-		}		  */
 			if($_FILES['Qa']['name']){
 					$filename=explode(".",$_FILES['Qa']['name']);
 					if($filename[1]=='csv') {  // this is the file extension where the 0 entry is the file name
@@ -283,13 +281,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 							} 
 							If ($lines>1){
 								
-								
-								
-								
-								
 								// put the answer data into the data base
-								//$sql = "INSERT INTO Qa (problem_id, dex, ans_a,ans_b,ans_c,ans_d,ans_e,ans_f,ans_g,ans_h,ans_i,ans_j,g1,g2,g3)	
-								//VALUES (:problem_id, :dex, :ans_a,:ans_b,:ans_c,:ans_d,:ans_e,:ans_f,:ans_g,:ans_h,:ans_i,:ans_j,:g1,:g2,:g3)";
 								$sql = "UPDATE Qa SET problem_id = :problem_id, dex = :dex, ans_a = :ans_a, ans_b = :ans_b, ans_c = :ans_c
 									,ans_d = :ans_d, ans_e = :ans_e, ans_f = :ans_f, ans_g = :ans_g, ans_h = :ans_h, ans_i = :ans_i, ans_j = :ans_j,g1 = :g1, g2 = :g2, g3 = :g3
 									WHERE problem_id = :problem_id AND dex = :dex";
@@ -451,8 +443,9 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 <p>Problem statement file: <input type='file' accept='.docx' name='docxfile'/></p>
 <p>Base-case  file: <input type='file' accept='.pdf' name='pdffile'/></p>
+<p>Worked out Solution  file: <input type='file' accept='.pdf' name='solnfile'/></p>
 <p><hr></p>
-<p>hint_a file: <input type='file' accept='.html' name='hintaFile'/></p>
+<p>hint_a file: <input type='file' accept='.html' name='hint_aFile'/></p>
 
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
 <p><input type="submit" value="Update"/>
