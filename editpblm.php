@@ -184,7 +184,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$_SESSION['success'] = $_SESSION['success'].'Input data file upload successful';
 			}
 	} 	 
-// hint a file
+// hint_a file
 		if($_FILES['hint_aFile']['name']) {
 			$filename=explode(".",$_FILES['hint_aFile']['name']); // divides the file into its name and extension puts it into an array
 			
@@ -209,12 +209,328 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$newhint_aNm = "P".$problem_id."_ha_hint_a.html";
 			}
 			
+			$sql = "UPDATE Problem SET  hint_a = :hint_a 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_a'=> $newhint_aNm,	':problem_id' => $_POST['problem_id']));
+			
 			$pathName = 'uploads/'.$newhint_aNm;
 			if (move_uploaded_file($_FILES['hint_aFile']['tmp_name'], $pathName)){
 				$_SESSION['success'] = $_SESSION['success'].'Hint_aFile upload successful';
 			}
 		}
 
+	// hint_b file
+		if($_FILES['hint_bFile']['name']) {
+			$filename=explode(".",$_FILES['hint_bFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_bFile=addslashes($_FILES['hint_bFile']['tmp_name']);
+			$hint_bname=addslashes($_FILES['hint_bFile']['name']);
+			$hint_bFile=file_get_contents($hint_bFile);
+			$hint_bname = $_FILES['hint_bFile']['name'];
+			$tmp_hint_bname =  $_FILES['hint_bFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_b = :hint_b 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_b'=> $hint_bname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hb_*",$hint_bname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_bNm = $hint_bname;
+			}
+			else if($hint_bname !== ""){
+				$newhint_bNm = "P".$problem_id."_hb_".$hint_bname;
+			} else {
+				$newhint_bNm = "P".$problem_id."_hb_hint_b.html";
+			}
+			$sql = "UPDATE Problem SET  hint_b = :hint_b 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_b'=> $newhint_bNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_bNm;
+			if (move_uploaded_file($_FILES['hint_bFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_bFile upload successful';
+			}
+		}	
+		
+// hint c file
+		if($_FILES['hint_cFile']['name']) {
+			$filename=explode(".",$_FILES['hint_cFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_cFile=addslashes($_FILES['hint_cFile']['tmp_name']);
+			$hint_cname=addslashes($_FILES['hint_cFile']['name']);
+			$hint_cFile=file_get_contents($hint_cFile);
+			$hint_cname = $_FILES['hint_cFile']['name'];
+			$tmp_hint_cname =  $_FILES['hint_cFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_c = :hint_c 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_c'=> $hint_cname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hc_*",$hint_cname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_cNm = $hint_cname;
+			}
+			else if($hint_cname !== ""){
+				$newhint_cNm = "P".$problem_id."_hc_".$hint_cname;
+			} else {
+				$newhint_cNm = "P".$problem_id."_hc_hint_c.html";
+			}
+			$sql = "UPDATE Problem SET  hint_c = :hint_c 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_c'=> $newhint_cNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_cNm;
+			if (move_uploaded_file($_FILES['hint_cFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_cFile upload successful';
+			}
+		}		
+// hint_d file
+		if($_FILES['hint_dFile']['name']) {
+			$filename=explode(".",$_FILES['hint_dFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_dFile=addslashes($_FILES['hint_dFile']['tmp_name']);
+			$hint_dname=addslashes($_FILES['hint_dFile']['name']);
+			$hint_dFile=file_get_contents($hint_dFile);
+			$hint_dname = $_FILES['hint_dFile']['name'];
+			$tmp_hint_dname =  $_FILES['hint_dFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_d = :hint_d 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_d'=> $hint_dname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hd_*",$hint_dname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_dNm = $hint_dname;
+			}
+			else if($hint_dname !== ""){
+				$newhint_dNm = "P".$problem_id."_hd_".$hint_dname;
+			} else {
+				$newhint_dNm = "P".$problem_id."_hd_hint_d.html";
+			}
+			$sql = "UPDATE Problem SET  hint_d = :hint_d 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_d'=> $newhint_dNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_dNm;
+			if (move_uploaded_file($_FILES['hint_dFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_dFile upload successful';
+			}
+		}		
+		
+	// hint_e file
+		if($_FILES['hint_eFile']['name']) {
+			$filename=explode(".",$_FILES['hint_eFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_eFile=addslashes($_FILES['hint_eFile']['tmp_name']);
+			$hint_ename=addslashes($_FILES['hint_eFile']['name']);
+			$hint_eFile=file_get_contents($hint_eFile);
+			$hint_ename = $_FILES['hint_eFile']['name'];
+			$tmp_hint_ename =  $_FILES['hint_eFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_e = :hint_e 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_e'=> $hint_ename,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_he_*",$hint_ename,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_eNm = $hint_ename;
+			}
+			else if($hint_ename !== ""){
+				$newhint_eNm = "P".$problem_id."_he_".$hint_ename;
+			} else {
+				$newhint_eNm = "P".$problem_id."_he_hint_e.html";
+			}
+			$sql = "UPDATE Problem SET  hint_e = :hint_e 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_e'=> $newhint_eNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_eNm;
+			if (move_uploaded_file($_FILES['hint_eFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_eFile upload successful';
+			}
+		}
+// hint_f file
+		if($_FILES['hint_fFile']['name']) {
+			$filename=explode(".",$_FILES['hint_fFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_fFile=addslashes($_FILES['hint_fFile']['tmp_name']);
+			$hint_fname=addslashes($_FILES['hint_fFile']['name']);
+			$hint_fFile=file_get_contents($hint_fFile);
+			$hint_fname = $_FILES['hint_fFile']['name'];
+			$tmp_hint_fname =  $_FILES['hint_fFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_f = :hint_f 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_f'=> $hint_fname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hf_*",$hint_fname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_fNm = $hint_fname;
+			}
+			else if($hint_fname !== ""){
+				$newhint_fNm = "P".$problem_id."_hf_".$hint_fname;
+			} else {
+				$newhint_fNm = "P".$problem_id."_hf_hint_f.html";
+			}
+			$sql = "UPDATE Problem SET  hint_f = :hint_f 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_f'=> $newhint_fNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_fNm;
+			if (move_uploaded_file($_FILES['hint_fFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_fFile upload successful';
+			}
+		}
+// hint_g file
+		if($_FILES['hint_gFile']['name']) {
+			$filename=explode(".",$_FILES['hint_gFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_gFile=addslashes($_FILES['hint_gFile']['tmp_name']);
+			$hint_gname=addslashes($_FILES['hint_gFile']['name']);
+			$hint_gFile=file_get_contents($hint_gFile);
+			$hint_gname = $_FILES['hint_gFile']['name'];
+			$tmp_hint_gname =  $_FILES['hint_gFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_g = :hint_g 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_g'=> $hint_gname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hg_*",$hint_gname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_gNm = $hint_gname;
+			}
+			else if($hint_gname !== ""){
+				$newhint_gNm = "P".$problem_id."_hg_".$hint_gname;
+			} else {
+				$newhint_gNm = "P".$problem_id."_hg_hint_g.html";
+			}
+			$sql = "UPDATE Problem SET  hint_g = :hint_g 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_g'=> $newhint_gNm,	':problem_id' => $_POST['problem_id']));
+			$pathName = 'uploads/'.$newhint_gNm;
+			if (move_uploaded_file($_FILES['hint_gFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_gFile upload successful';
+			}
+		}
+// hint_h file
+		if($_FILES['hint_hFile']['name']) {
+			$filename=explode(".",$_FILES['hint_hFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_hFile=addslashes($_FILES['hint_hFile']['tmp_name']);
+			$hint_hname=addslashes($_FILES['hint_hFile']['name']);
+			$hint_hFile=file_get_contents($hint_hFile);
+			$hint_hname = $_FILES['hint_hFile']['name'];
+			$tmp_hint_hname =  $_FILES['hint_hFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_h = :hint_h 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_h'=> $hint_hname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hh_*",$hint_hname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_hNm = $hint_hname;
+			}
+			else if($hint_hname !== ""){
+				$newhint_hNm = "P".$problem_id."_hh_".$hint_hname;
+			} else {
+				$newhint_hNm = "P".$problem_id."_hh_hint_h.html";
+			}
+			$sql = "UPDATE Problem SET  hint_h = :hint_h 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_h'=> $newhint_hNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_hNm;
+			if (move_uploaded_file($_FILES['hint_hFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_hFile upload successful';
+			}
+		}
+// hint_i file
+		if($_FILES['hint_iFile']['name']) {
+			$filename=explode(".",$_FILES['hint_iFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_iFile=addslashes($_FILES['hint_iFile']['tmp_name']);
+			$hint_iname=addslashes($_FILES['hint_iFile']['name']);
+			$hint_iFile=file_get_contents($hint_iFile);
+			$hint_iname = $_FILES['hint_iFile']['name'];
+			$tmp_hint_iname =  $_FILES['hint_iFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_i = :hint_i 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_i'=> $hint_iname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hi_*",$hint_iname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_iNm = $hint_iname;
+			}
+			else if($hint_iname !== ""){
+				$newhint_iNm = "P".$problem_id."_hi_".$hint_iname;
+			} else {
+				$newhint_iNm = "P".$problem_id."_hi_hint_i.html";
+			}
+			$sql = "UPDATE Problem SET  hint_i = :hint_i 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_i'=> $newhint_iNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_iNm;
+			if (move_uploaded_file($_FILES['hint_iFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_iFile upload successful';
+			}
+		}
+// hint_j file
+		if($_FILES['hint_jFile']['name']) {
+			$filename=explode(".",$_FILES['hint_jFile']['name']); // divides the file into its name and extension puts it into an array
+			
+			$hint_jFile=addslashes($_FILES['hint_jFile']['tmp_name']);
+			$hint_jname=addslashes($_FILES['hint_jFile']['name']);
+			$hint_jFile=file_get_contents($hint_jFile);
+			$hint_jname = $_FILES['hint_jFile']['name'];
+			$tmp_hint_jname =  $_FILES['hint_jFile']['tmp_name'];
+			$location = "uploads/"; // This is the local file directory name where the files get saved
+			
+			$sql = "UPDATE Problem SET  hint_j = :hint_j 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_j'=> $hint_jname,	':problem_id' => $_POST['problem_id']));
+			
+			if (fnmatch("P*_hj_*",$hint_jname,FNM_CASEFOLD ) ){ // ignore the case when matching
+			$newhint_jNm = $hint_jname;
+			}
+			else if($hint_jname !== ""){
+				$newhint_jNm = "P".$problem_id."_hj_".$hint_jname;
+			} else {
+				$newhint_jNm = "P".$problem_id."_hj_hint_j.html";
+			}
+			$sql = "UPDATE Problem SET  hint_j = :hint_j 	
+						WHERE problem_id=:problem_id";
+			$stmt = $pdo->prepare($sql);
+			$stmt->execute(array(':hint_j'=> $newhint_jNm,	':problem_id' => $_POST['problem_id']));
+			
+			$pathName = 'uploads/'.$newhint_jNm;
+			if (move_uploaded_file($_FILES['hint_jFile']['tmp_name'], $pathName)){
+				$_SESSION['success'] = $_SESSION['success'].'hint_jFile upload successful';
+			}
+		}
+	
+		
+		
+		
 		
 // get the new school_id if it has been updated
 		
@@ -225,13 +541,6 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 			$school_id=$row['school_id'];
 	
 		
-	
-			$sql = "UPDATE problem SET hint_a = :newhint_aNm WHERE problem_id = :pblm_num";
-			$stmt = $pdo->prepare($sql);
-			$stmt->execute(array(
-				':newhint_aNm' => $newhint_aNm,
-				':pblm_num' => $_POST['problem_id']));
-	
 			$_SESSION['success'] = 'Record updated';
 	
 			if($_FILES['Qa']['name']){
@@ -445,11 +754,21 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 <p>Base-case  file: <input type='file' accept='.pdf' name='pdffile'/></p>
 <p>Worked out Solution  file: <input type='file' accept='.pdf' name='solnfile'/></p>
 <p><hr></p>
-<p>hint_a file: <input type='file' accept='.html' name='hint_aFile'/></p>
-
 <input type="hidden" name="problem_id" value="<?= $problem_id ?>">
 <p><input type="submit" value="Update"/>
 <a href="QRPRepo.php">Cancel</a></p>
+<p><hr></p>
+<p>hint_a file: <input type='file' accept='.html' name='hint_aFile'/></p>
+<p>hint_b file: <input type='file' accept='.html' name='hint_bFile'/></p>
+<p>hint_c file: <input type='file' accept='.html' name='hint_cFile'/></p>
+<p>hint_d file: <input type='file' accept='.html' name='hint_dFile'/></p>
+<p>hint_e file: <input type='file' accept='.html' name='hint_eFile'/></p>
+<p>hint_f file: <input type='file' accept='.html' name='hint_fFile'/></p>
+<p>hint_g file: <input type='file' accept='.html' name='hint_gFile'/></p>
+<p>hint_h file: <input type='file' accept='.html' name='hint_hFile'/></p>
+<p>hint_i file: <input type='file' accept='.html' name='hint_iFile'/></p>
+<p>hint_j file: <input type='file' accept='.html' name='hint_jFile'/></p>
+
 </form>
 </body>
 </html>

@@ -131,7 +131,24 @@ if ( $row === false ) {
 	
 	$hinta = $probData['hint_a'];
 	$hintaPath="uploads/".$hinta;
-	
+	$hintb = $probData['hint_b'];
+	$hintbPath="uploads/".$hintb;
+	$hintc = $probData['hint_c'];
+	$hintcPath="uploads/".$hintc;
+	$hintd = $probData['hint_d'];
+	$hintdPath="uploads/".$hintd;
+	$hinte = $probData['hint_e'];
+	$hintePath="uploads/".$hinte;
+	$hintf = $probData['hint_f'];
+	$hintfPath="uploads/".$hintf;
+	$hintg = $probData['hint_g'];
+	$hintgPath="uploads/".$hintg;
+	$hinth = $probData['hint_h'];
+	$hinthPath="uploads/".$hinth;
+	$hinti = $probData['hint_i'];
+	$hintiPath="uploads/".$hinti;
+	$hintj = $probData['hint_j'];
+	$hintjPath="uploads/".$hintj;
 	
 	$unit = array_slice($row,22,20);  // dows the same thing but easier so long as the table always has the same structure
 	//print_r($unit);
@@ -332,8 +349,9 @@ if(isset($_POST['dex_num']) && $index<=200 && $index>0 && $dispAnsflag)
 //	print_r ($_SESSION['wrongC']);
 //		print_r ($wrongCount);
 	//print_r ($corr);
-?>
-</table>
+
+echo '</table>'	;
+	?>
 
 
 
@@ -370,31 +388,31 @@ if ($partsFlag[0]){ ?>
 <p> a): <input [ type=number]{width: 5%;} name="a" size = 10% value="<?php echo (htmlentities($resp['a']))?>" > <?php echo($unit[0]) ?> &nbsp - <b><?php echo ($corr['a']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[0]>$hintLimit and $corr['a']=="Not Correct"){echo '<a href="'.$hintaPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[1]){ ?> 
-<p> b): <input [ type=number]{width: 5%;} name="b" size = 10% value="<?php echo (htmlentities($resp['b']))?>" > <?php echo($unit[1]) ?> &nbsp - <b><?php echo ($corr['b']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[1]>$hintLimit and $corr['b']=="Not Correct"){echo '<a href="hints/partb/partb.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> b): <input [ type=number]{width: 5%;} name="b" size = 10% value="<?php echo (htmlentities($resp['b']))?>" > <?php echo($unit[1]) ?> &nbsp - <b><?php echo ($corr['b']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[1]>$hintLimit and $corr['b']=="Not Correct"){echo '<a href="'.$hintbPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[2]){ ?> 
-<p> c): <input [ type=number]{width: 5%;} name="c" size = 10% value="<?php echo (htmlentities($resp['c']))?>" > <?php echo($unit[2]) ?> &nbsp - <b><?php echo ($corr['c']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[2]>$hintLimit and $corr['c']=="Not Correct"){echo '<a href="hints/partc/partc.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> c): <input [ type=number]{width: 5%;} name="c" size = 10% value="<?php echo (htmlentities($resp['c']))?>" > <?php echo($unit[2]) ?> &nbsp - <b><?php echo ($corr['c']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[2]>$hintLimit and $corr['c']=="Not Correct"){echo '<a href="'.$hintcPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[3]){ ?> 
-<p> d): <input [ type=number]{width: 5%;} name="d" size = 10% value="<?php echo (htmlentities($resp['d']))?>" > <?php echo($unit[3]) ?> &nbsp - <b><?php echo ($corr['d']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[3]>$hintLimit and $corr['d']=="Not Correct"){echo '<a href="hints/partd/partd.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> d): <input [ type=number]{width: 5%;} name="d" size = 10% value="<?php echo (htmlentities($resp['d']))?>" > <?php echo($unit[3]) ?> &nbsp - <b><?php echo ($corr['d']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[3]>$hintLimit and $corr['d']=="Not Correct"){echo '<a href="'.$hintdPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[4]){ ?> 
-<p> e): <input [ type=number]{width: 5%;} name="e" size = 10% value="<?php echo (htmlentities($resp['e']))?>" > <?php echo($unit[4]) ?> &nbsp - <b><?php echo ($corr['e']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[4]>$hintLimit and $corr['e']=="Not Correct"){echo '<a href="hints/parte/parte.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> e): <input [ type=number]{width: 5%;} name="e" size = 10% value="<?php echo (htmlentities($resp['e']))?>" > <?php echo($unit[4]) ?> &nbsp - <b><?php echo ($corr['e']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[4]>$hintLimit and $corr['e']=="Not Correct"){echo '<a href="'.$hintePath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[5]){ ?> 
-<p> f): <input [ type=number]{width: 5%;} name="f" size = 10% value="<?php echo (htmlentities($resp['f']))?>" > <?php echo($unit[5]) ?> &nbsp - <b><?php echo ($corr['f']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[5]>$hintLimit and $corr['f']=="Not Correct"){echo '<a href="hints/partf/partf.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> f): <input [ type=number]{width: 5%;} name="f" size = 10% value="<?php echo (htmlentities($resp['f']))?>" > <?php echo($unit[5]) ?> &nbsp - <b><?php echo ($corr['f']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[5]>$hintLimit and $corr['f']=="Not Correct"){echo '<a href="'.$hintfPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[6]){ ?> 
-<p> g): <input [ type=number]{width: 5%;} name="g" size = 10% value="<?php echo (htmlentities($resp['g']))?>" > <?php echo($unit[6]) ?> &nbsp - <b><?php echo ($corr['g']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[6]>$hintLimit and $corr['g']=="Not Correct"){echo '<a href="hints/partg/partg.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> g): <input [ type=number]{width: 5%;} name="g" size = 10% value="<?php echo (htmlentities($resp['g']))?>" > <?php echo($unit[6]) ?> &nbsp - <b><?php echo ($corr['g']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[6]>$hintLimit and $corr['g']=="Not Correct"){echo '<a href="'.$hintgPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[7]){ ?> 
-<p> h): <input [ type=number]{width: 5%;} name="h" size = 10% value="<?php echo (htmlentities($resp['h']))?>" > <?php echo($unit[7]) ?> &nbsp - <b><?php echo ($corr['h']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[7]>$hintLimit and $corr['h']=="Not Correct"){echo '<a href="hints/parth/parth.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> h): <input [ type=number]{width: 5%;} name="h" size = 10% value="<?php echo (htmlentities($resp['h']))?>" > <?php echo($unit[7]) ?> &nbsp - <b><?php echo ($corr['h']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[7]>$hintLimit and $corr['h']=="Not Correct"){echo '<a href="'.$hinthPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[8]){ ?> 
-<p> i): <input [ type=number]{width: 5%;} name="i" size = 10% value="<?php echo (htmlentities($resp['i']))?>" > <?php echo($unit[8]) ?> &nbsp - <b><?php echo ($corr['i']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[8]>$hintLimit and $corr['i']=="Not Correct"){echo '<a href="hints/parti/parti.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> i): <input [ type=number]{width: 5%;} name="i" size = 10% value="<?php echo (htmlentities($resp['i']))?>" > <?php echo($unit[8]) ?> &nbsp - <b><?php echo ($corr['i']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[8]>$hintLimit and $corr['i']=="Not Correct"){echo '<a href="'.$hintiPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 if ($partsFlag[9]){ ?> 
-<p> j): <input [ type=number]{width: 5%;} name="j" size = 10% value="<?php echo (htmlentities($resp['j']))?>" > <?php echo($unit[9]) ?> &nbsp - <b><?php echo ($corr['j']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[9]>$hintLimit and $corr['j']=="Not Correct"){echo '<a href="hints/partj/partj.html" target = "_blank"> hints for this part </a>';} ?>  </p>
+<p> j): <input [ type=number]{width: 5%;} name="j" size = 10% value="<?php echo (htmlentities($resp['j']))?>" > <?php echo($unit[9]) ?> &nbsp - <b><?php echo ($corr['j']) ?> </b><?php if (isset($_POST['dex_num']) and @$wrongCount[9]>$hintLimit and $corr['j']=="Not Correct"){echo '<a href="'.$hintjPath.'"target = "_blank"> hints for this part </a>';} ?>  </p>
 <?php } 
 
 
