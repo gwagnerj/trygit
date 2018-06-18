@@ -1,7 +1,6 @@
-
 <?php
-require_once "pdo.php";
 session_start();
+require_once "pdo.php";
 
 if ( isset($_POST['name']) or isset($_POST['email'])
      or isset($_POST['title']) or isset($_POST['s_name']) ) {
@@ -54,7 +53,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 					$newDocxNm = "P".$problem_id."_d_problemStatement.docx";
 				}
 				
-				$sql = "UPDATE problem SET docxfilenm = :newDocxNm WHERE problem_id = :pblm_num";
+				$sql = "UPDATE Problem SET docxfilenm = :newDocxNm WHERE problem_id = :pblm_num";
 				$stmt = $pdo->prepare($sql);
 				$stmt->execute(array(
 					':newDocxNm' => $newDocxNm,
@@ -94,7 +93,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 					$newPdfNm = "P".$problem_id."_p_basecase.pdf";
 			}
 		
-			$sql = "UPDATE problem SET pdffilenm = :newPdfNm WHERE problem_id = :pblm_num";
+			$sql = "UPDATE Problem SET pdffilenm = :newPdfNm WHERE problem_id = :pblm_num";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
 				':newPdfNm' => $newPdfNm,
@@ -134,7 +133,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$newSolnNm = "P".$problem_id."_s_solnfile.pdf";
 			}
 	
-			$sql = "UPDATE problem SET soln_pblm = :newSolnNm WHERE problem_id = :pblm_num";
+			$sql = "UPDATE Problem SET soln_pblm = :newSolnNm WHERE problem_id = :pblm_num";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
 				':newSolnNm' => $newSolnNm,
@@ -173,7 +172,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 				$newInputNm = "P".$problem_id."_i_inputfile.csv";
 			}
 	
-			$sql = "UPDATE problem SET infilenm = :newInputNm WHERE problem_id = :pblm_num";
+			$sql = "UPDATE Problem SET infilenm = :newInputNm WHERE problem_id = :pblm_num";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(
 				':newInputNm' => $newInputNm,
@@ -535,7 +534,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 // get the new school_id if it has been updated
 		
 		
-			$stmt = $pdo->prepare("SELECT * FROM school where s_name = :xyz");
+			$stmt = $pdo->prepare("SELECT * FROM School where s_name = :xyz");
 			$stmt->execute(array(":xyz" => $_POST['s_name']));
 			$row = $stmt->fetch(PDO::FETCH_ASSOC);
 			$school_id=$row['school_id'];
@@ -638,7 +637,7 @@ if ( isset($_POST['name']) or isset($_POST['email'])
 		$status = "New Compl";
 		
 	}
-    $sql = "UPDATE problem SET name = :name,
+    $sql = "UPDATE Problem SET name = :name,
             email = :email, title = :title,school_id=:school_id,status = :status
             WHERE problem_id = :problem_id";
     $stmt = $pdo->prepare($sql);
@@ -665,7 +664,7 @@ if ( ! isset($_GET['problem_id']) ) {
 }
 
 
-$stmt = $pdo->prepare("SELECT * FROM problem where problem_id = :xyz");
+$stmt = $pdo->prepare("SELECT * FROM Problem where problem_id = :xyz");
 $stmt->execute(array(":xyz" => $_GET['problem_id']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if ( $row === false ) {
@@ -692,7 +691,7 @@ $problem_id = $row['problem_id'];
 $school_id= $row['school_id'];
 
 // now get the current school name
-$stmt = $pdo->prepare("SELECT * FROM school where school_id = :xyz");
+$stmt = $pdo->prepare("SELECT * FROM School where school_id = :xyz");
 $stmt->execute(array(":xyz" => $school_id));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 $s = htmlentities($row['s_name']);

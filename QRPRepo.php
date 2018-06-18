@@ -60,8 +60,8 @@ echo('<table border="1">'."\n");
     echo("</td><td>");
 	 echo('<b>Soln</b>');
 	echo("</td></tr>\n");
-$qstmnt="SELECT problem.problem_id AS problem_id,problem.name AS name,problem.email as email,problem.title as title,problem.status as status, problem.soln_pblm as soln_pblm,problem.game_prob_flag as game_prob_flag, problem.nm_author as nm_author,problem.docxfilenm as docxfilenm,problem.infilenm as infilenm,problem.pdffilenm as pdffilenm, School.s_name as s_name
-FROM problem LEFT JOIN School ON problem.school_id=School.school_id;";
+$qstmnt="SELECT Problem.problem_id AS problem_id,Problem.name AS name,Problem.email as email,Problem.title as title,Problem.status as status, Problem.soln_pblm as soln_pblm,Problem.game_prob_flag as game_prob_flag, Problem.nm_author as nm_author,Problem.docxfilenm as docxfilenm,Problem.infilenm as infilenm,Problem.pdffilenm as pdffilenm, School.s_name as s_name
+FROM Problem LEFT JOIN School ON Problem.school_id=School.school_id;";
 $stmt = $pdo->query($qstmnt);
 while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
     echo "<tr><td>";

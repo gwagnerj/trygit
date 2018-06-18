@@ -1,11 +1,11 @@
 <?php
-require_once "pdo.php";
 session_start();
+require_once "pdo.php";
 
 if ( isset($_POST['delete']) && isset($_POST['problem_id']) ) {
   
   // Delete the word file from the upload file folder
-	$sql = "SELECT * FROM problem WHERE problem_id = :zip";
+	$sql = "SELECT * FROM Problem WHERE problem_id = :zip";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(':zip' => $_POST['problem_id']));
 	$data = $stmt -> fetch();
@@ -14,7 +14,7 @@ if ( isset($_POST['delete']) && isset($_POST['problem_id']) ) {
 	$pdffilenm=$data['pdffilenm'];
 	
 // Now delete the row from the database
-	$sql = "DELETE FROM problem WHERE problem_id = :zip";
+	$sql = "DELETE FROM Problem WHERE problem_id = :zip";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(':zip' => $_POST['problem_id']));
     
@@ -39,7 +39,7 @@ if ( ! isset($_GET['problem_id']) ) {
   return;
 }
 
-$stmt = $pdo->prepare("SELECT title, problem_id FROM problem where problem_id = :xyz");
+$stmt = $pdo->prepare("SELECT title, problem_id FROM Problem where problem_id = :xyz");
 $stmt->execute(array(":xyz" => $_GET['problem_id']));
 $row = $stmt->fetch(PDO::FETCH_ASSOC);
 if ( $row === false ) {

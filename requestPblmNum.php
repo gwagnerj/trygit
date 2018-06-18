@@ -35,7 +35,7 @@ if(isset($_POST['title'])){
 						$row = $stmt->fetch(PDO::FETCH_ASSOC);
 						$school_id=$row['school_id'];
 	  
-	  $sql = "INSERT INTO problem (name, email, title,nm_author, game_prob_flag, school_id, subject, course, primary_concept, secondary_concept, status)	
+	  $sql = "INSERT INTO Problem (name, email, title,nm_author, game_prob_flag, school_id, subject, course, primary_concept, secondary_concept, status)	
 	  VALUES (:name, :email, :title,:nm_author, :game_prob_flag,:school_id,:subject, :course, :primary_concept, :secondary_concept,:status)";
 			$stmt = $pdo->prepare($sql);
 			$stmt->execute(array(

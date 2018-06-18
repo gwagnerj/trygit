@@ -10,7 +10,7 @@ if ( ! isset($_GET['problem_id']) ) {
 }
   
 	
-    $sql = "SELECT * FROM problem WHERE problem_id = :zip";
+    $sql = "SELECT * FROM Problem WHERE problem_id = :zip";
     $stmt = $pdo->prepare($sql);
     $stmt->execute(array(':zip' => $_GET['problem_id']));
 	$data = $stmt -> fetch();

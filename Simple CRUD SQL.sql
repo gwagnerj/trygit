@@ -18,8 +18,8 @@
     school_id int NOT NULL AUTO_INCREMENT, 
     PRIMARY KEY (school_id),
     s_name varchar(127),
-   Contraint s_name UNIQUE,
-   Index USING BTREE (s_name)
+   CONSTRAINT s_name UNIQUE,
+   INDEX USING BTREE (s_name)
  ) ENGINE = INNODB CHARACTER SET = utf8;
  
  
