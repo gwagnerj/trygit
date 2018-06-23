@@ -9,6 +9,29 @@ session_start();
 <meta Charset = "utf-8">
 <title>QRP Repo</title>
 <meta name="viewport" content="width=device-width, initial-scale=1" /> 
+
+<style type="text/css">
+body {
+   margin: 0;
+   overflow: hidden;
+}
+#iframediv{
+	position:relative;
+	overflow:hidden;
+	padding-top: 56.25%
+}
+#iframe1 {
+    position:absolute;
+	align:bottom;
+    left: 0px;
+    width: 100%;
+    top: 0px;
+    height: 100%;
+}
+</style>
+
+
+
 </head>
 
 <body>
@@ -105,11 +128,13 @@ while ( $row = $stmt->fetch(PDO::FETCH_ASSOC) ) {
 
 <!-- <object data=<?php// echo('"'.$preveiw.'"'); ?> 
 type= "application/pdf" width="100%" Height="50%"> -->
-<?php 
-if($preview !== "uploads/" and $preview !== "Null") {
-	echo ('<iframe src="'.$preview.'"'.'width="100%" Height = "40%">');
 
-	echo ('</iframe>');
+<?php 
+
+if($preview !== "uploads/" and $preview !== "Null") {
+	echo ('<div id ="iframediv"><iframe id = "iframe1" src="'.$preview.'"'.'></iframe></div>');
+
+	//echo ('</iframe>');
 }
 ?>
 <!-- </object> -->
