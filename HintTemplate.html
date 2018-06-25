@@ -94,15 +94,39 @@ document.formz.grade.value="Score= "+getScore()+" of "+tot
 	<div style="width:90%;">
 	 <p align="left"><font size="4">
 
-	<button onclick="goBack()">Back to Problem</button>
+<p><input class="bigbutton" type="button" name="cancel" id="cancel" value="Back to Problem" onClick="goBack()"></p>
 </div>
 </form>
 
-<script>
+<SCRIPT>
+  // really not sure why I need two goBack functions but when I have just one it won't work with the iphone or it won't work at all
+    function goBack() {
+        		 
+		
+		var isiPad = navigator.userAgent.match(/iPad/i) != null;
+        var isiPhone = navigator.userAgent.match(/iPhone/i) != null;
+        if (isiPad || isiPhone) {
+           setTimeout( \"refresh()\", 300 );
+        } else {
+           
+		   window.close();
+		   window.history.back(true);
+        }
+    }
+	</script>
+	
+	<script>
+
 // If run this should close the page one way or the other
 function goBack() {
-    window.close();
-	window.history.back();
+	
+		setTimeout(window.close, 400); 
+		
+           window.close();
+        
+		window.history.back();
+		window.history.back();
+		window.history.back();
 }
 
 </script>

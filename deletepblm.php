@@ -12,6 +12,17 @@ if ( isset($_POST['delete']) && isset($_POST['problem_id']) ) {
 	$docxfilenm=$data['docxfilenm'];  // 
 	$inputfilenm=$data['infilenm'];  // these are the name of the files we need to delete
 	$pdffilenm=$data['pdffilenm'];
+	$hint[0]=$data['hint_a'];
+	$hint[1]=$data['hint_b'];
+	$hint[2]=$data['hint_c'];
+	$hint[3]=$data['hint_d'];
+	$hint[4]=$data['hint_e'];
+	$hint[5]=$data['hint_f'];
+	$hint[6]=$data['hint_g'];
+	$hint[7]=$data['hint_h'];
+	$hint[8]=$data['hint_i'];
+	$hint[9]=$data['hint_j'];
+	$soln_pblm=$data['soln_pblm'];
 	
 // Now delete the row from the database
 	$sql = "DELETE FROM Problem WHERE problem_id = :zip";
@@ -27,7 +38,12 @@ if ( isset($_POST['delete']) && isset($_POST['problem_id']) ) {
 	}
 	if(unlink('uploads/'.$pdffilenm)){ // unlink is the command to delete a file
 		$_SESSION['success'] = 'pdffile deleted';
+	}	
+	for ($i=0;$i<=9;$i++){	
+		unlink('uploads/'.$hint[$i]); // unlink is the command to delete a file	
 	}
+	unlink('uploads/'.$soln_pblm);
+	
     header( 'Location: QRPRepo.php' ) ;
     return;
 }

@@ -94,21 +94,21 @@ if ( isset($_SESSION['success']) ) {
 
 <svg  width="400" height="100" >
   <rect  fill="white" stroke="blue" stroke-width="5" width="300" height = "75" x="15"/>
-  <text x="125" y="50" text-anchor="middle" fill="black" font-size="25">Rect: <?php echo ($_SESSION['g1']);?></text>
+  <text x="125" y="50" text-anchor="middle" fill="black" font-size="25"> <?php echo ($_SESSION['g1']);?></text>
 </svg>
 
 
 <svg height="140" width="400">
   <ellipse cx="130" cy="70" rx="100" ry="40"
   style="fill:white ;stroke:red;stroke-width:4" />
-   <text x="130" y="80" text-anchor="middle" fill="black" font-size="25">Ellip: <?php echo ($_SESSION['g2']);?></text>
+   <text x="130" y="80" text-anchor="middle" fill="black" font-size="25"> <?php echo ($_SESSION['g2']);?></text>
 </svg>
 
 
 
 <svg  width="400" height="100" >
   <polygon  fill="white" stroke="green" stroke-width="4" points="60,10 200,10 220,60 30,60"/>
-  <text x="125" y="50" text-anchor="middle" fill="black" font-size="25">Trap: <?php echo ($_SESSION['g3']);?></text>
+  <text x="125" y="50" text-anchor="middle" fill="black" font-size="25"> <?php echo ($_SESSION['g3']);?></text>
 </svg>
 
 

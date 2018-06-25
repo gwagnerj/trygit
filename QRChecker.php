@@ -68,7 +68,7 @@ if ( isset($_GET['problem_id']) and  isset($_GET['dex_num'])) {
 		$wrongCount[$j]=0;
 		
 	}	
-	$_SESSION['wrongC']=$wrongCount; 
+	$_SESSION['wrongC']=$wrongCount; // not sure what this is doing here
 	
 	$hintLimit = 3;
 	$dispBase = 1;
@@ -243,7 +243,7 @@ if(!($_SESSION['count'])){
 							
 								
 							}
-							elseif ($resp[$resp_key[$j]]==0)  // got it wrong and attempted it
+							elseif ($resp[$resp_key[$j]]==0)  // got it wrong and did not attempted it
 							{
 								
 								$wrongCount[$j] = ($_SESSION['wrongC'[$j]]);
@@ -251,7 +251,7 @@ if(!($_SESSION['count'])){
 								$corr[$corr_key[$j]]='';
 							//	echo ($wrongCount[$j]);
 							}
-							else  // response is equal to zero so probably did not answer (better to use POST value I suppose - fix later
+							else  // not correct (better to use POST value I suppose - fix later
 							{
 								$wrongCount[$j] = ($_SESSION['wrongC'[$j]])+1;
 								$_SESSION['wrongC'[$j]] = $wrongCount[$j];

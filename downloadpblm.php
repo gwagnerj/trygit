@@ -36,8 +36,9 @@ if ( ! isset($_GET['problem_id']) ) {
 	echo "<br>";
     echo "<a href='".$file_pathpdf."'>".$pdffilenm."</a>";	
 	echo "<br>";
+	echo "<hr>";
 	 echo "<p> The latest template to generate the problem files for students using your class list is below </p>";	
-	  echo "<p> You will have to enable macros to use it </p>";	
+	  echo "<p> for non game problems - You will have to enable macros to use it </p>";	
     echo "<a href='downloads/QRP Merger A500C.xlsm'> QRP Merger </a>";	
 	echo "<br>";	
 	
